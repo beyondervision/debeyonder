@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <title>CFServices.ai · Z.A.L. Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #0b0e14;
+      --panel: #111827;
+      --border: #1f2937;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+
+      --accent: #38bdf8;
+      --accent-soft: rgba(56,189,248,0.15);
+
+      --good: #4ade80;
+      --warn: #facc15;
+      --bad: #f87171;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #0f172a 0%, var(--bg) 60%);
+      color: var(--text);
+      font-family: 'Space Mono', monospace;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn 1.2s ease-out;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 920px;
+      padding: 2rem;
+    }
+
+    .panel {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(180deg, rgba(17,24,39,0.95), rgba(11,14,20,0.95));
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 2.8rem;
+      box-shadow: 0 0 0 1px rgba(56,189,248,0.05), 0 20px 60px rgba(0,0,0,0.6);
+    }
+
+    /* Field resonance */
+    .panel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 14px;
+      background: radial-gradient(circle at 50% 0%, rgba(56,189,248,0.08), transparent 70%);
+      animation: fieldGlow 6s ease-in-out infinite;
+      z-index: -1;
+    }
+
+    @keyframes fieldGlow {
+      0% { opacity: 0.2; transform: scale(1); }
+      50% { opacity: 0.35; transform: scale(1.03); }
+      100% { opacity: 0.2; transform: scale(1); }
+    }
+
+    h1 {
+      font-family: 'Orbitron', sans-serif;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      text-align: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .tagline {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.75rem;
+      margin-bottom: 2.5rem;
+      letter-spacing: 0.05em;
+      opacity: 0.8;
+    }
+
+    .triad {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .metric-block {
+      background: rgba(17,24,39,0.6);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.6rem;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .metric-title {
+      font-size: 0.7rem;
+      color: var(--muted);
+      margin-bottom: 0.6rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .metric-value {
+      font-size: 2rem;
+      font-family: 'Orbitron', sans-serif;
+      color: var(--accent);
+    }
+
+    /* Status grid */
+    .status-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1rem;
+      border-top: 1px solid var(--border);
+      padding-top: 2rem;
+    }
+
+    .status-item {
+      background: rgba(11,14,20,0.4);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem;
+      transition: box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+
+    .status-label {
+      font-size: 0.65rem;
+      color: var(--muted);
+      margin-bottom: 0.3rem;
+      display: block;
+    }
+
+    .status-num {
+      font-weight: bold;
+      font-size: 1rem;
+    }
+
+    /* AI status intelligence */
+    .status-403.active { color: var(--warn); box-shadow: 0 0 12px rgba(250,204,21,0.25); }
+    .status-451.active { color: var(--bad);  box-shadow: 0 0 14px rgba(248,113,113,0.35); }
+    .status-503.active { color: var(--warn); box-shadow: 0 0 12px rgba(250,204,21,0.25); }
+    .status-404.active { color: var(--accent); box-shadow: 0 0 12px rgba(56,189,248,0.25); }
+
+    #zal {
+      position: fixed;
+      bottom: 18px;
+      right: 20px;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.45rem 0.8rem;
+      background: rgba(15,23,42,0.8);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      font-size: 0.65rem;
+      color: var(--muted);
+      backdrop-filter: blur(8px);
+    }
+
+    .zal-indicator {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: zalPulse 2.6s infinite;
+    }
+
+    @keyframes zalPulse {
+      0% { box-shadow: 0 0 0 0 rgba(56,189,248,0.6); }
+      70% { box-shadow: 0 0 0 10px rgba(56,189,248,0); }
+      100% { box-shadow: 0 0 0 0 rgba(56,189,248,0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+
+<body>
+
+<div id="zal">
+  <div class="zal-indicator"></div>
+  <div>Z.A.L. · passieve observatie actief</div>
+</div>
+
+<div class="container">
+  <div class="panel">
+    <h1>Z.A.L. Dashboard</h1>
+    <div class="tagline">Triadische observatie · Toegang · Status · Resonantie</div>
+
+    <div class="triad">
+      <div class="metric-block">
+        <div class="metric-title">Totaal Events</div>
+        <div class="metric-value" id="total">—</div>
+      </div>
+      <div class="metric-block">
+        <div class="metric-title">Veld Activiteit</div>
+        <div class="metric-value" id="statusTotal">—</div>
+      </div>
+      <div class="metric-block">
+        <div class="metric-title">Laatste Puls</div>
+        <div class="metric-value" id="lastSeen" style="font-size:1.2rem;">—</div>
+      </div>
+    </div>
+
+    <div class="status-grid">
+      <div class="status-item status-403"><span class="status-label">403 · Autorisatie</span><span class="status-num" id="s403">—</span></div>
+      <div class="status-item status-404"><span class="status-label">404 · Upgrade</span><span class="status-num" id="s404">—</span></div>
+      <div class="status-item status-451"><span class="status-label">451 · Wettelijk</span><span class="status-num" id="s451">—</span></div>
+      <div class="status-item status-503"><span class="status-label">503 · Onderhoud</span><span class="status-num" id="s503">—</span></div>
+    </div>
+
+    <div style="margin-top:3rem;text-align:center;font-size:0.7rem;color:var(--muted);opacity:0.6;">
+      CFServices.ai · Geïntegreerde Z.A.L. Interface
+    </div>
+  </div>
+</div>
+
+<script>
+  function formatTime(iso) {
+    if (!iso) return "—";
+    return new Date(iso).toLocaleTimeString('nl-NL',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  }
+
+  async function loadMetrics() {
+    try {
+      const res = await fetch("/api/metrics");
+      const d = await res.json();
+
+      const s = d.byStatus || {};
+
+      const map = [
+        ["s403","status-403",s["403"]],
+        ["s404","status-404",s["404"]],
+        ["s451","status-451",s["451"]],
+        ["s503","status-503",s["503"]],
+      ];
+
+      document.getElementById("total").textContent = d.total ?? 0;
+      document.getElementById("statusTotal").textContent =
+        (s["403"]||0)+(s["404"]||0)+(s["451"]||0)+(s["503"]||0);
+
+      document.getElementById("lastSeen").textContent = formatTime(d.lastSeen);
+
+      map.forEach(([id,cls,val])=>{
+        const el = document.getElementById(id);
+        el.textContent = val ?? 0;
+        el.parentElement.classList.toggle("active", (val ?? 0) > 0);
+      });
+
+    } catch(e){ console.error("METRICS_LOAD_FAIL",e); }
+  }
+
+  loadMetrics();
+  setInterval(loadMetrics,5000);
+</script>
+
+</body>
+</html>

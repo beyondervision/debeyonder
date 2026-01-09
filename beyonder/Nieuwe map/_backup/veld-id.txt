@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CFServices · Veld-ID Profiel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { background-color: #0f172a; font-family: 'Rajdhani', sans-serif; color: #f8fafc; -webkit-user-select: none; user-select: none; }
+    .glass-panel { background: rgba(30, 41, 59, 0.7); border: 1px solid #334155; backdrop-filter: blur(10px); }
+    .status-active { color: #10b981; }
+    .status-pending { color: #fcd34d; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-6 relative overflow-hidden">
+
+  <div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: radial-gradient(#06b6d4 1px, transparent 1px); background-size: 30px 30px;"></div>
+
+  <div class="absolute top-6 left-6 text-sm font-bold tracking-widest opacity-60 z-10">
+    <a href="../index.html" class="hover:text-white transition">← TERUG NAAR VELDPOORT</a>
+  </div>
+
+  <div class="max-w-lg w-full space-y-8 relative z-10">
+    <div class="text-center">
+      <h1 class="text-3xl text-sky-400 font-bold mb-2" style="font-family: 'Orbitron', sans-serif;">CANONIEK VELD-PROFIEL</h1>
+      <p class="text-slate-400 text-xs tracking-widest">Geregistreerd onder Modulo73-Axioma 9</p>
+    </div>
+
+    <div id="output-panel" class="glass-panel p-8 rounded-2xl shadow-2xl relative border-t-4 border-t-emerald-500">
+      
+      <div id="status-display">
+        <h3 class="text-xl text-white font-bold mb-4" style="font-family: 'Orbitron', sans-serif;">Welkom, <span id="veldnaam" class="text-emerald-400">...</span></h3>
+        
+        <p class="text-slate-400 text-sm uppercase tracking-wider mb-2">Uw Unieke Veld-ID (CFS-ID):</p>
+        <div class="bg-black/40 p-4 rounded border border-slate-700 text-left font-mono text-xs mb-4 flex justify-between items-center">
+            <span id="cfs-id" class="text-sky-300 font-bold text-sm break-all select-all">Laden...</span>
+            <button onclick="copyCfsId(this)" id="copy-btn" class="px-3 py-1 bg-sky-600 hover:bg-sky-500 text-white text-xs font-bold rounded transition whitespace-nowrap">
+              Kopieer CFS-ID
+            </button>
+        </div>
+        
+        <div class="grid grid-cols-2 gap-4 text-sm font-medium">
+            <div class="p-3 bg-slate-900 rounded border border-slate-700">
+                <p class="text-slate-500 text-xs uppercase">Registratie Status</p>
+                <p id="reg-status" class="status-active mt-1">Actief</p>
+            </div>
+            <div class="p-3 bg-slate-900 rounded border border-slate-700">
+                <p class="text-slate-500 text-xs uppercase">Verankering</p>
+                <p id="timestamp" class="text-white mt-1">N/A</p>
+            </div>
+        </div>
+
+        <p class="text-slate-500 text-xs mt-6 text-center">
+            Gebruik deze Veld-ID om in te loggen op de Client Portal voor volledige audittoegang.
+        </p>
+
+        <a href="login.html" class="w-full mt-6 py-3 block bg-violet-600 hover:bg-violet-500 text-white font-bold uppercase rounded transition shadow-lg text-sm text-center" style="font-family: 'Orbitron', sans-serif;">
+            NAAR CLIENT PORTAL
+        </a>
+      </div>
+
+      <div id="missing-data" class="hidden text-center py-6">
+        <p class="text-red-400 text-lg mb-4">⚠️ Geen actieve transmissie gevonden.</p>
+        <p class="text-slate-400 text-sm">Activeer uw Veld-ID via de <a href="register.html" class="text-sky-400 hover:underline">Registratiepagina</a>.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    function showNonBlockingStatus(message, type) {
+        // Helper voor niet-blokkerende meldingen (vervangt alert())
+        const msg = document.createElement('div');
+        msg.textContent = message;
+        // Tailwind classes voor esthetiek
+        msg.className = 'fixed bottom-4 right-4 z-50 p-3 rounded-lg text-sm transition-all duration-300 font-medium tracking-wide shadow-xl';
+        msg.style.backgroundColor = type === 'success' ? '#10b981' : (type === 'error' ? '#ef4444' : '#f59e0b');
+        msg.style.color = '#ffffff';
+        document.body.appendChild(msg);
+        setTimeout(() => document.body.removeChild(msg), 3000);
+    }
+    
+    function copyCfsId(btn) {
+        const idElement = document.getElementById("cfs-id");
+        const id = idElement.innerText;
+        
+        if (!id || id === 'Laden...') {
+            showNonBlockingStatus("Kan code niet kopiëren. Wacht tot de Lineage is geladen.", 'error');
+            return;
+        }
+
+        // Gebruik navigator.clipboard.writeText (moderne en non-blocking)
+        navigator.clipboard.writeText(id).then(() => {
+            const originalText = btn.textContent;
+            btn.classList.replace('bg-sky-600', 'bg-emerald-600');
+            btn.textContent = '✅ GEKOPIEERD!';
+            
+            setTimeout(() => {
+                btn.textContent = originalText;
+                btn.classList.replace('bg-emerald-600', 'bg-sky-600');
+            }, 1500);
+            
+        }, (err) => {
+            showNonBlockingStatus('Kopiëren mislukt. Probeer handmatig.', 'error');
+        });
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+        const id = sessionStorage.getItem("new_cfs_id");
+        const veld = sessionStorage.getItem("new_cfs_veld");
+        const timestamp = new Date().toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
+        const outputPanel = document.getElementById("output-panel");
+        const statusDisplay = document.getElementById("status-display");
+        const missingData = document.getElementById("missing-data");
+
+        if (!id || !veld) {
+            statusDisplay.classList.add("hidden");
+            missingData.classList.remove("hidden");
+            
+            sessionStorage.removeItem("new_cfs_id");
+            sessionStorage.removeItem("new_cfs_veld");
+            outputPanel.classList.replace("border-t-emerald-500", "border-t-red-500");
+            
+            return;
+        }
+
+        document.getElementById("cfs-id").innerText = id;
+        document.getElementById("veldnaam").innerText = veld;
+        document.getElementById("timestamp").innerText = timestamp;
+        
+        sessionStorage.setItem("current_client_code", id);
+        
+        sessionStorage.removeItem("new_cfs_id");
+        sessionStorage.removeItem("new_cfs_veld");
+    });
+    
+    document.addEventListener('contextmenu', event => event.preventDefault());
+  </script>
+</body>
+</html>

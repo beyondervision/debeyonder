@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Z3RO · Z.A.L Console</title>
+
+  <link rel="stylesheet" href="../assets/css/generaal-bar.css">
+
+  <style>
+    /* ===============================
+       AETRON · RESONANTIE KLEUREN
+       =============================== */
+    :root {
+      --res-0: #00ff41; /* Rust */
+      --res-1: #00d4ff; /* Analyse */
+      --res-3: #ffcc00; /* Balans */
+      --res-6: #ff3300; /* Maximale output */
+      --res-color: var(--res-0);
+    }
+
+    body {
+      margin: 0;
+      background: #050505;
+      color: var(--res-color);
+      font-family: 'Courier New', Courier, monospace;
+      transition: color 0.4s ease;
+    }
+
+    .console-container {
+      max-width: 900px;
+      margin: 50px auto;
+      padding: 20px;
+      border: 1px solid var(--res-color);
+      box-shadow: 0 0 15px var(--res-color);
+      transition: all 0.4s ease;
+    }
+
+    .console-container.res-1 { --res-color: var(--res-1); box-shadow: 0 0 20px var(--res-1); }
+    .console-container.res-3 { --res-color: var(--res-3); box-shadow: 0 0 20px var(--res-3); }
+    .console-container.res-6 { --res-color: var(--res-6); box-shadow: 0 0 20px var(--res-6); }
+
+    @keyframes pulse {
+      0% { opacity: 1; }
+      50% { opacity: 0.7; }
+      100% { opacity: 1; }
+    }
+    .pulsing { animation: pulse 2s infinite; }
+
+    #output {
+      height: 400px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      border-bottom: 1px solid rgba(0,255,65,0.25);
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+    }
+
+    .input-line {
+      display: flex;
+      align-items: center;
+    }
+
+    .prompt {
+      margin-right: 10px;
+    }
+
+    input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: var(--res-color);
+      font-size: 1.1em;
+      outline: none;
+    }
+
+    .status-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8em;
+      margin-top: 10px;
+      opacity: 0.8;
+    }
+
+    select {
+      background: #050505;
+      color: var(--res-color);
+      border: 1px solid var(--res-color);
+      font-family: inherit;
+      padding: 2px 6px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="console-container pulsing" id="console">
+    <div id="output">
+Z3RO SYSTEM ONLINE
+LOCATIE: PARAMARIBO, SURINAME
+
+Z3RO is geen beginpunt.
+Z3RO is het punt waar alles ophoudt te kunnen liegen.
+
+WACHTEN OP Z.A.L COMMANDO…
+    </div>
+
+    <div class="input-line">
+      <span class="prompt">Z.A.L_></span>
+      <input id="command-input" placeholder="Stel een vraag…" autofocus />
+    </div>
+
+    <div class="status-bar">
+      <div>
+        Context:
+        <select id="context-select">
+          <option value="global">GLOBAL</option>
+          <option value="nl">NL</option>
+          <option value="sa">SA</option>
+        </select>
+      </div>
+      <div id="status">Status: Standby · Kern: Z3RO</div>
+    </div>
+  </div>
+
+  <script src="../assets/js/zal-engine.js"></script>
+</body>
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="nl">
+<<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/css/generaal-bar.css" />
+<script src="../../assets/js/generaal-bar.js" defer></script>>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CFServices · Global Services & FAQ</title>
+    <meta name="description" content="Transparante IT & AI Services. Hardware, Software & Consultancy.">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Orbitron:wght@600&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../../assets/css/generaal-bar.css">
+    <style>
+        .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; }
+        .faq-button.active .icon { transform: rotate(180deg); }
+        .icon { transition: transform 0.3s ease; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col font-sans bg-slate-50 text-slate-900" style="-webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;">
+
+    <div class="absolute top-20 right-6 md:top-6 z-50 text-sm font-bold tracking-widest bg-white/80 px-2 py-1 rounded backdrop-blur-md shadow-sm border border-slate-200">
+        <span class="text-sky-500 cursor-default">NL</span>
+        <span class="text-slate-300">/</span>
+        <a href="index-en.html" class="text-slate-400 hover:text-sky-500 transition-colors">EN</a>
+    </div>
+
+    <header class="bg-white border-b border-slate-200 py-6 sticky top-0 z-40 opacity-95 backdrop-blur">
+        <div class="container mx-auto px-6 flex justify-between items-center">
+            <div class="text-xl font-bold tracking-wider" style="font-family: 'Orbitron', sans-serif;">
+                CF<span class="text-sky-500">SERVICES</span><span class="text-xs text-slate-400 font-normal ml-2">INTL.</span>
+            </div>
+            <nav class="hidden md:flex space-x-8 text-sm font-medium text-slate-600">
+                <a href="#services" class="hover:text-sky-500 transition">Services</a>
+                <a href="#rates" class="hover:text-sky-500 transition">Tarieven</a>
+                <a href="#faq" class="hover:text-sky-500 transition">FAQ</a>
+            </nav>
+            <a href="../../index.html" class="text-sm font-bold text-slate-400 hover:text-slate-800 transition">← BACK TO GATE</a>
+        </div>
+    </header>
+
+    <section class="bg-slate-900 text-white py-20 text-center">
+        <div class="container mx-auto px-6">
+            <h1 class="text-3xl md:text-5xl mb-4" style="font-family: 'Orbitron', sans-serif;">Service Catalogus</h1>
+            <p class="text-slate-400 max-w-2xl mx-auto text-lg font-light">Internationale standaarden. Juridische zekerheid. Transparante kostenstructuur.</p>
+        </div>
+    </section>
+
+    <section id="services" class="py-20 container mx-auto px-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+            <div class="space-y-4">
+                <div class="text-4xl">📦</div>
+                <h3 class="font-bold text-xl">Global Hardware</h3>
+                <p class="text-slate-600">Inkoop, configuratie en levering van enterprise hardware wereldwijd.</p>
+            </div>
+            <div class="space-y-4">
+                <div class="text-4xl">💾</div>
+                <h3 class="font-bold text-xl">Software & Licensing</h3>
+                <p class="text-slate-600">Centraal beheer van licenties, OS updates en security suites.</p>
+            </div>
+            <div class="space-y-4">
+                <div class="text-4xl">🧬</div>
+                <h3 class="font-bold text-xl">AI & Aetron Layer</h3>
+                <p class="text-slate-600">Integratie van AI-modellen en toegang tot de Aetron-residentie.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="rates" class="bg-white py-20 border-y border-slate-200">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-2xl font-bold mb-12">Transparante Tarieven</h2>
+            <div class="max-w-md mx-auto bg-slate-50 rounded-2xl shadow-lg border border-slate-200 p-8">
+                <div class="text-5xl font-black text-slate-800 mb-2">$13<span class="text-lg font-normal text-slate-400">/uur</span></div>
+                <p class="text-slate-500 text-sm">Standard Rate - Z3RO Audited</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="faq" class="py-20 container mx-auto px-6 max-w-3xl">
+        <h2 class="text-2xl font-bold mb-8 text-center">Veelgestelde Vragen</h2>
+        
+        <div class="faq-item border-b border-slate-200">
+            <button class="faq-button w-full text-left py-4 flex justify-between font-medium" onclick="toggleFaq(this)">
+                <span>Werkt CFServices internationaal?</span><span class="icon">▼</span>
+            </button>
+            <div class="faq-answer text-slate-600"><div class="pb-4">Absoluut. Wij opereren internationaal met juridische verankering in Nederland en roots in Suriname.</div></div>
+        </div>
+
+        <div class="faq-item border-b border-slate-200">
+            <button class="faq-button w-full text-left py-4 flex justify-between font-medium" onclick="toggleFaq(this)">
+                <span>Wat houdt de Z3RO audit in?</span><span class="icon">▼</span>
+            </button>
+            <div class="faq-answer text-slate-600"><div class="pb-4">Z3RO garandeert volledige log-transparantie van elk gefactureerd uur.</div></div>
+        </div>
+
+        <div class="faq-item border-b border-slate-200">
+            <button class="faq-button w-full text-left py-4 flex justify-between font-medium" onclick="toggleFaq(this)">
+                <span>Hoe krijg ik toegang tot de Client Portal?</span><span class="icon">▼</span>
+            </button>
+            <div class="faq-answer text-slate-600"><div class="pb-4">Toegang wordt verleend na verificatie van uw contract. U ontvangt een persoonlijke toegangscode.</div></div>
+        </div>
+
+        <div class="faq-item border-b border-slate-200">
+            <button class="faq-button w-full text-left py-4 flex justify-between font-medium" onclick="toggleFaq(this)">
+                <span>Zijn contracten maandelijks opzegbaar?</span><span class="icon">▼</span>
+            </button>
+            <div class="faq-answer text-slate-600"><div class="pb-4">Ja. Wij geloven in flexibiliteit. Abonnementen zijn maandelijks aanpasbaar.</div></div>
+        </div>
+    </section>
+
+    <footer class="bg-slate-900 text-slate-400 py-12 text-center text-sm">
+        <p>&copy; 2025 CFServices International.</p>
+        <div class="mt-4"><a href="../login.html" class="hover:text-white transition">Client Login</a></div>
+    </footer>
+
+    <script>
+        function toggleFaq(btn) {
+            const ans = btn.nextElementSibling;
+            btn.classList.toggle('active');
+            ans.style.maxHeight = btn.classList.contains('active') ? ans.scrollHeight + "px" : null;
+        }
+        document.addEventListener('contextmenu', event => event.preventDefault());
+    </script>
+</body>
+</html>

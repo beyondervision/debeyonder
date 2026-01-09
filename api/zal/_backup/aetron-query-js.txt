@@ -1,0 +1,126 @@
+/* =========================================================
+   Z.A.L Engine · Z3RO Console Listener
+   - Context + Cluster → backend
+   - Console beslist NIET: luistert naar data.resonance
+   ========================================================= */
+
+/* Glyph mapping (paden resolven t.o.v. de pagina /z3ro/) */
+const glyphMap = {
+  0: "../glyph/glyph aetron/Cse108 - 35- Resonantie- Aetron-kleur-bevestiging-Balans-0.png",
+  1: "../glyph/glyph aetron/Cse108 - 35- Resonantie- Aetron-kleur-bevestiging-Balans-1.png",
+  2: "../glyph/glyph aetron/Cse108 - 35- Resonantie- Aetron-kleur-bevestiging-Balans-2.png",
+  3: "../glyph/glyph aetron/Cse108 - 35- Resonantie- Aetron-kleur-bevestiging-Balans-3.png",
+  4: "../glyph/glyph aetron/Cse108 - 35- Resonantie- Aetron-kleur-bevestiging-Balans-4.png",
+  5: "../glyph/glyph aetron/Cse108 - 35- Resonantie- Aetron-kleur-bevestiging-Balans-5.png",
+  6: "../glyph/glyph aetron/Cse108 - 35- Resonantie- Aetron-kleur-bevestiging-Balans-6.png"
+};
+
+const inputEl = document.getElementById("command-input");
+const contextSelectEl = document.getElementById("context-select");
+const clusterSelectEl = document.getElementById("cluster-select");
+const statusEl = document.getElementById("status");
+const consoleEl = document.getElementById("console");
+
+let currentContext = (contextSelectEl && contextSelectEl.value) || "global";
+let currentCluster = (clusterSelectEl && clusterSelectEl.value) || "2026";
+
+function setStatus(text) {
+  if (statusEl) statusEl.innerText = text;
+}
+
+function appendOutput(text) {
+  const output = document.getElementById("output");
+  output.innerText += text;
+  output.scrollTop = output.scrollHeight;
+}
+
+/* UI: context/cluster updates (labels only) */
+if (contextSelectEl) {
+  contextSelectEl.addEventListener("change", () => {
+    currentContext = contextSelectEl.value;
+    setStatus(`Status: Standby · Kern: Z3RO · Context: ${currentContext.toUpperCase()} · Cluster: ${currentCluster}`);
+  });
+}
+
+if (clusterSelectEl) {
+  clusterSelectEl.addEventListener("change", () => {
+    currentCluster = clusterSelectEl.value;
+    setStatus(`Status: Standby · Kern: Z3RO · Context: ${currentContext.toUpperCase()} · Cluster: ${currentCluster}`);
+  });
+}
+
+/* Input listener */
+if (inputEl) {
+  inputEl.addEventListener("keypress", (e) => {
+    if (e.key !== "Enter") return;
+
+    const query = (e.target.value || "").trim();
+    if (!query) return;
+
+    appendOutput(`\n\n[CTX:${currentContext.toUpperCase()}][CL:${currentCluster}] > ${query}`);
+    runZAL(query, currentContext, currentCluster);
+    e.target.value = "";
+  });
+}
+
+/* Core: runZAL() */
+async function runZAL(question, context, cluster) {
+  setStatus(`Status: Z.A.L resoneert… · Kern: Z3RO · Context: ${context.toUpperCase()} · Cluster: ${cluster}`);
+  consoleEl.classList.add("pulsing");
+
+  try {
+    const resp = await fetch("/api/zal/query", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ question, context, cluster })
+    });
+
+    const data = await resp.json();
+
+    if (data.answer) {
+      appendOutput(`\nZ.A.L [Z3RO]:\n${data.answer}`);
+    } else {
+      appendOutput(`\nZ.A.L [Z3RO]: geen antwoord ontvangen.`);
+    }
+
+    if (data.validity) {
+      appendOutput(`\n— Geldigheid: ${data.validity}`);
+    }
+
+    if (Array.isArray(data.sources) && data.sources.length) {
+      appendOutput(`\n— Bronnen:\n${data.sources.map(s => "• " + (s.url || s)).join("\n")}`);
+    }
+
+    // 🔥 Console beslist NIET: alleen luisteren naar data.resonance
+    if (typeof data.resonance === "number") {
+      updateResonance(data.resonance);
+    }
+
+  } catch (e) {
+    appendOutput(`\nFOUT [Z3RO]: Resonantie onderbroken.`);
+  } finally {
+    consoleEl.classList.remove("pulsing");
+    setStatus(`Status: Resonerend · Kern: Z3RO · Context: ${context.toUpperCase()} · Cluster: ${cluster}`);
+  }
+}
+
+/* Resonantie → kleur + glyph */
+function updateResonance(level) {
+  const glyphEl = document.getElementById("glyph-overlay");
+
+  // reset kleur
+  consoleEl.classList.remove("res-1", "res-3", "res-6");
+
+  // kleurtoewijzing (Aetron)
+  if (level >= 1 && level < 3) consoleEl.classList.add("res-1");
+  if (level >= 3 && level < 6) consoleEl.classList.add("res-3");
+  if (level >= 6) consoleEl.classList.add("res-6");
+
+  // glyph-manifestatie
+  if (glyphEl && glyphMap[level]) {
+    glyphEl.src = glyphMap[level];
+    glyphEl.style.display = "block";
+  } else if (glyphEl) {
+    glyphEl.style.display = "none";
+  }
+}

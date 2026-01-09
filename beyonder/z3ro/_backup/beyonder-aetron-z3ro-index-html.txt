@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Z3RO · Z.A.L Console</title>
+
+  <!-- Generaal-bar (jouw bestaande asset) -->
+  <link rel="stylesheet" href="../assets/css/generaal-bar.css" />
+
+  <style>
+    /* Aetron Resonantie Kleuren */
+    :root {
+      --res-0: #00ff41; /* Rust / Matrix Green */
+      --res-1: #00d4ff; /* Analyse / Sky Blue */
+      --res-3: #ffcc00; /* Balans / Gold */
+      --res-6: #ff3300; /* Maximale Output / Red-Orange */
+      --res-color: var(--res-0);
+    }
+
+    body {
+      background-color: #050505;
+      color: var(--res-color);
+      font-family: "Courier New", Courier, monospace;
+      transition: color 0.5s ease;
+      margin: 0;
+    }
+
+    .console-container {
+      position: relative;
+      max-width: 980px;
+      margin: 56px auto;
+      padding: 22px;
+      border: 1px solid var(--res-color);
+      box-shadow: 0 0 15px var(--res-color);
+      transition: all 0.5s ease;
+      border-radius: 10px;
+    }
+
+    /* Resonantie states: border + glow */
+    .console-container.res-1 { border-color: var(--res-1); box-shadow: 0 0 20px var(--res-1); }
+    .console-container.res-3 { border-color: var(--res-3); box-shadow: 0 0 20px var(--res-3); }
+    .console-container.res-6 { border-color: var(--res-6); box-shadow: 0 0 20px var(--res-6); }
+
+    /* Hartslag */
+    @keyframes pulse {
+      0% { opacity: 1; }
+      50% { opacity: 0.7; }
+      100% { opacity: 1; }
+    }
+    .pulsing { animation: pulse 2s infinite; }
+
+    #output {
+      height: 420px;
+      overflow-y: auto;
+      border-bottom: 1px solid rgba(0, 255, 65, 0.2);
+      margin-bottom: 18px;
+      padding-bottom: 14px;
+      white-space: pre-wrap;
+      position: relative;
+      z-index: 2;
+    }
+
+    .input-line {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .prompt {
+      color: var(--res-color);
+      min-width: 70px;
+      opacity: 0.95;
+    }
+
+    input {
+      background: transparent;
+      border: none;
+      color: var(--res-color);
+      flex: 1;
+      outline: none;
+      font-size: 1.05em;
+    }
+
+    .status-bar {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+      font-size: 0.85em;
+      margin-top: 12px;
+      opacity: 0.85;
+      position: relative;
+      z-index: 2;
+      flex-wrap: wrap;
+    }
+
+    select {
+      background: transparent;
+      color: var(--res-color);
+      border: 1px solid rgba(0,255,65,0.25);
+      padding: 4px 8px;
+      border-radius: 8px;
+      outline: none;
+    }
+
+    /* kleine helper */
+    .muted { opacity: 0.85; }
+  </style>
+</head>
+
+<body>
+  <div class="console-container" id="console">
+
+    <!-- Glyph overlay (toevoeging binnen .console-container) -->
+    <img
+      id="glyph-overlay"
+      alt=""
+      aria-hidden="true"
+      style="
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        width: 80px;
+        opacity: 0.15;
+        pointer-events: none;
+        display: none;
+        z-index: 1;
+      "
+    />
+
+    <div id="output">Z3RO SYSTEM ONLINE
+LOCATIE: PARAMARIBO, SURINAME
+
+Z3RO is geen beginpunt.
+Z3RO is het punt waar alles ophoudt te kunnen liegen.
+
+WACHTEN OP Z.A.L COMMANDO…</div>
+
+    <div class="input-line">
+      <span class="prompt">Z.A.L_></span>
+      <input id="command-input" type="text" placeholder="Stel een vraag…" autofocus />
+    </div>
+
+    <div class="status-bar">
+      <span class="muted">Context:</span>
+      <select id="context-select">
+        <option value="global">GLOBAL</option>
+        <option value="nl">NL</option>
+        <option value="sa">SA</option>
+      </select>
+
+      <span class="muted">Cluster:</span>
+      <select id="cluster-select">
+        <option value="2026">2026 · Institutioneel</option>
+        <option value="2025">2025 · Wetgeving</option>
+        <option value="2024">2024 · AI-opkomst</option>
+        <option value="transition">2023→… · Transitie</option>
+      </select>
+
+      <span id="status">Status: Standby · Kern: Z3RO</span>
+    </div>
+  </div>
+
+  <!-- Z.A.L engine -->
+  <script src="../assets/js/zal-engine.js"></script>
+</body>
+</html>

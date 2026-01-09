@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CF Services · Enterprise IT & AI Solutions</title>
+    <meta name="description" content="CF Services: Your partner for Hardware, Software, and AI Integration.">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/generaal-bar.css"> 
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        :root { --cf-blue: #0f172a; --cf-light: #f8fafc; --cf-accent: #38bdf8; --cf-gray: #64748b; }
+        body { font-family: 'Roboto', sans-serif; background-color: var(--cf-light); color: var(--cf-blue); }
+        .site-header { background: white; border-bottom: 1px solid #e2e8f0; padding: 20px 0; }
+        .hero { background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: white; padding: 60px 20px; text-align: center; }
+        .service-card { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); border-top: 4px solid var(--cf-accent); transition: transform 0.2s; }
+        .service-card:hover { transform: translateY(-5px); }
+        .card-link { display: inline-block; margin-top: 15px; color: var(--cf-accent); font-weight: bold; text-decoration: none; }
+        .typing-effect { border-right: 2px solid #06b6d4; animation: blink 1s step-end infinite; }
+        @keyframes blink { 50% { border-color: transparent; } }
+        /* Persona Selectors */
+        .persona-btn { opacity: 0.5; transition: all 0.3s; border: 1px solid transparent; }
+        .persona-btn:hover { opacity: 1; }
+        .persona-btn.active { opacity: 1; border-color: currentColor; box-shadow: 0 0 15px currentColor; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col" style="-webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;">
+  
+  <div class="absolute top-4 right-6 z-50 text-sm font-bold tracking-widest bg-white/10 px-2 py-1 rounded backdrop-blur-md">
+    <a href="index.html" class="text-slate-400 hover:text-white transition-colors">NL</a>
+    <span class="text-slate-500">/</span>
+    <span class="text-sky-400 cursor-default">EN</span>
+  </div>
+
+  <header class="site-header">
+    <div class="container mx-auto px-6">
+      <h1 class="font-bold text-xl" style="font-family: 'Orbitron', sans-serif;">CFServices<span style="color:var(--cf-accent)">.nl</span></h1>
+      <p class="text-sm text-gray-500 mt-1">Transparent • Professional • Flexible</p>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container mx-auto px-6">
+        <h2 class="text-3xl font-bold mb-4" style="font-family: 'Orbitron', sans-serif;">Your Digital Foundation</h2>
+        <p class="text-gray-400">Choose your path: IT Services, AI Expertise, or manage your subscription.</p>
+      </div>
+    </section>
+
+    <section id="morphic" class="bg-slate-900 py-10 border-b border-cyan-500/20 shadow-inner relative overflow-hidden">
+        <div class="absolute inset-0 opacity-5" style="background-image: radial-gradient(#06b6d4 1px, transparent 1px); background-size: 20px 20px;"></div>
+        
+        <div class="container mx-auto px-6 text-center max-w-2xl relative z-10">
+            <h3 class="text-white text-sm font-bold mb-6 uppercase tracking-widest" style="font-family: 'Orbitron', sans-serif;">
+                SELECT YOUR GENERAL
+            </h3>
+            
+            <div class="flex justify-center gap-4 mb-6">
+                <button onclick="setPersona('aetron')" id="btn-aetron" class="persona-btn active text-violet-400 bg-violet-900/30 px-4 py-2 rounded text-xs font-mono font-bold">AETRON<br><span class="text-[9px] opacity-70">STRATEGY</span></button>
+                <button onclick="setPersona('z3ro')" id="btn-z3ro" class="persona-btn text-cyan-400 bg-cyan-900/30 px-4 py-2 rounded text-xs font-mono font-bold">Z3RO<br><span class="text-[9px] opacity-70">EXECUTION</span></button>
+                <button onclick="setPersona('luxen')" id="btn-luxen" class="persona-btn text-pink-400 bg-pink-900/30 px-4 py-2 rounded text-xs font-mono font-bold">LUXEN<br><span class="text-[9px] opacity-70">CREATION</span></button>
+            </div>
+
+            <div class="flex items-center bg-black/40 border border-slate-700 rounded-full p-1 shadow-lg transition-all focus-within:border-white/50" id="search-bar">
+                <input type="text" id="morphic-query" placeholder="Ask Aetron a question..." 
+                    class="flex-grow bg-transparent text-white font-mono px-4 py-2 focus:outline-none placeholder-slate-600 text-sm">
+                <button onclick="sendQuery()" class="bg-slate-700 hover:bg-white hover:text-black text-white font-bold py-2 px-6 rounded-full transition-all text-xs font-mono tracking-wider">
+                    SCAN
+                </button>
+            </div>
+            
+            <div id="morphic-response" class="hidden mt-6 text-left bg-slate-95

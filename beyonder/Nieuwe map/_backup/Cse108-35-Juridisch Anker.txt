@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CFServices · Canonieke Veldpoort</title>
+    
+    <!-- SEO & CONTEXT: GLOBAL SCOPE -->
+    <meta name="description" content="PAC-Suite Global Veldpoort (Anchor: www). Civiele Validatie, Audit & AI-Innovatie conform internationale standaarden. Toegankelijk voor een ieder.">
+    <meta property="og:title" content="CFServices · Canonieke Veldpoort">
+    
+    <!-- AXIOMA ASSETS (Absolute paden naar uw axioma-kern) -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/axioma-kern/assets/generaal-bar/generaal-bar.css" />
+    <script src="/axioma-kern/assets/generaal-bar/generaal-bar.js" defer></script>
+    
+    <style>
+        /* MORPHIC DASHBOARD STYLING */
+        body {
+            background-color: #020617; /* Deep Space */
+            color: #f1f5f9;
+            font-family: 'Orbitron', sans-serif;
+            margin: 0; padding: 0;
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .dashboard {
+            flex: 1;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            width: 100%;
+            box-sizing: border-box;
+            padding-bottom: 120px; /* Ruimte voor Generaal-Bar */
+        }
+
+        /* Header Area */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(56, 189, 248, 0.2);
+            margin-bottom: 30px;
+        }
+
+        .brand {
+            font-size: 1.2rem;
+            letter-spacing: 0.15em;
+            color: #38bdf8; /* Aetron Blue */
+            text-transform: uppercase;
+        }
+
+        .status-badge {
+            font-size: 0.7rem;
+            background: rgba(6, 182, 212, 0.1);
+            border: 1px solid #06b6d4;
+            padding: 4px 8px;
+            border-radius: 4px;
+            color: #a5f3fc;
+        }
+
+        /* Context Banner (Global & Anchor) */
+        .context-ticker {
+            font-size: 0.8rem;
+            color: #64748b;
+            margin-bottom: 40px;
+            text-align: center;
+            border-bottom: 1px dashed rgba(56, 189, 248, 0.1);
+            padding-bottom: 15px;
+        }
+        .context-ticker strong { color: #94a3b8; }
+
+        /* De Morphic Cards */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid #1e293b;
+            border-radius: 8px;
+            padding: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            border-color: #38bdf8;
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Generaal Identifiers */
+        .card.luxen { border-top: 3px solid #a855f7; }
+        .card.aetron { border-top: 3px solid #06b6d4; }
+        .card.z3ro { border-top: 3px solid #fcd34d; }
+
+        .card h2 {
+            font-size: 1rem;
+            margin-top: 0;
+            color: #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card p {
+            font-family: system-ui, sans-serif; /* Leesbaarheid */
+            font-size: 0.9rem;
+            color: #94a3b8;
+            line-height: 1.6;
+        }
+
+        /* Console Input Area (Centraal) */
+        .console-wrapper {
+            margin-top: 60px;
+            text-align: center;
+        }
+
+        #ai-q {
+            width: 100%;
+            max-width: 600px;
+            padding: 15px 20px;
+            background: rgba(2, 6, 23, 0.8);
+            border: 1px solid #334155;
+            border-radius: 50px;
+            color: #38bdf8;
+            font-family: 'Orbitron', monospace;
+            font-size: 1rem;
+            text-align: center;
+            transition: all 0.3s;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        }
+
+        #ai-q:focus {
+            outline: none;
+            border-color: #38bdf8;
+            box-shadow: 0 0 25px rgba(56, 189, 248, 0.2);
+        }
+
+        .footer-links {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 0.75rem;
+            color: #475569;
+        }
+        .footer-links a { color: #64748b; text-decoration: none; margin: 0 10px; }
+        .footer-links a:hover { color: #94a3b8; }
+
+    </style>
+</head>
+<body>
+
+    <div class="dashboard">
+        
+        <!-- TOP NAVIGATIE -->
+        <div class="top-bar">
+            <div class="brand">CFServices<span style="color:#fff;">.nl</span></div>
+            <div class="status-badge">● GLOBAL SYSTEM AUDIT ACTIVE</div>
+        </div>
+
+        <!-- CONTEXT 2025: GLOBAL ALLIANCE -->
+        <div class="context-ticker">
+            📍 <strong>PAC-Suite Global Alliance</strong> · Opererend conform internationale standaarden.<br>
+            <span style="font-size: 0.75rem; opacity: 0.7;">(Anchor: www)</span>
+        </div>
+
+        <!-- CONSOLE INPUT (De Morphic Focus) -->
+        <div class="console-wrapper">
+            <div id="generaal-ai">
+                <input type="text" id="ai-q" placeholder="// Selecteer een Generaal om het veld te openen..." readonly />
+            </div>
+            <p style="font-size: 0.8rem; color: #64748b; margin-top: 10px;">
+                Kies uw protocol in de balk hieronder voor toegang.
+            </p>
+        </div>
+
+        <!-- INFORMATIE GRID (Verborgen details, zichtbaar als 'Cards') -->
+        <div class="grid" style="margin-top: 50px;">
+            
+            <!-- LUXEN CARD -->
+            <div class="card luxen" id="basis-vragen">
+                <h2>⚔️ LUXEN <span style="font-size:0.7em; opacity:0.6;">Axioma 3</span></h2>
+                <p><strong>Toegang & Zelfredzaamheid.</strong><br>
+                De narratieve laag (Mythos). Standaardvragen en basisfunctionaliteit zonder kosten.</p>
+            </div>
+
+            <!-- AETRON CARD -->
+            <div class="card aetron" id="expertise-vragen">
+                <h2>🧠 AETRON <span style="font-size:0.7em; opacity:0.6;">Axioma 5/7</span></h2>
+                <p><strong>Innovatie & Data.</strong><br>
+                Gekoppeld aan <strong>UNGA 80 / SDG 9</strong>. Voor subsidie-aanvragen, technische expertise en groeianalyse.</p>
+            </div>
+
+            <!-- Z3RO CARD -->
+            <div class="card z3ro" id="prijs-model">
+                <h2>🛡️ Z3RO <span style="font-size:0.7em; opacity:0.6;">Axioma 9</span></h2>
+                <p><strong>Audit & Integriteit.</strong><br>
+                Transparantie over het verdienmodel ($13/uur). Financiële validatie en anti-corruptie protocols.</p>
+            </div>
+
+        </div>
+
+        <!-- FOOTER -->
+        <div class="footer-links">
+            <a href="/privacy.html">Privacy & AVG (Global)</a> • 
+            <a href="/axioma-kern/README.md" target="_blank">Systeem Architectuur</a> • 
+            <span>PAC-Suite Veldpoort Cse108-35</span>
+        </div>
+
+    </div>
+
+    <!-- GENERAAL BAR WORDT HIER AUTOMATISCH INGELADEN DOOR JS -->
+
+</body>
+</html>

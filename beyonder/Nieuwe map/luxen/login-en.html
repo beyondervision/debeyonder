@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/generaal-bar.css" />
+<script src="../assets/js/generaal-bar.js" defer></script>>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Z3RO · Secure Entry Protocol</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background-color: #0f172a;
+      font-family: 'Orbitron', sans-serif;
+      color: #f8fafc;
+      /* Z3RO Shield */
+      -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;
+    }
+    input { user-select: text; -webkit-user-select: text; }
+    .scanner { animation: pulseScan 2s infinite; box-shadow: 0 0 20px rgba(139, 92, 246, 0.4); }
+    @keyframes pulseScan {
+      0% { transform: scale(1); opacity: 1; box-shadow: 0 0 20px rgba(139, 92, 246, 0.4); }
+      50% { transform: scale(1.05); opacity: 0.8; box-shadow: 0 0 40px rgba(139, 92, 246, 0.6); }
+      100% { transform: scale(1); opacity: 1; box-shadow: 0 0 20px rgba(139, 92, 246, 0.4); }
+    }
+    .access-granted { border-color: #10b981 !important; box-shadow: 0 0 30px #10b981 !important; animation: none !important; }
+  </style>
+  <script>
+    // Smart Check: Already logged in? -> Dashboard
+    if (sessionStorage.getItem("z3ro_session") === "active") {
+        window.location.href = "dashboard.html";
+    }
+  </script>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-6 text-center">
+  
+  <div class="absolute top-6 right-6 text-xs font-bold tracking-widest opacity-60 z-50">
+    <a href="login.html" class="text-slate-600 hover:text-white transition-colors">NL</a> / 
+    <span class="text-violet-400 cursor-default">EN</span>
+  </div>
+
+  <h1 class="text-violet-500 text-2xl md:text-3xl font-bold uppercase tracking-widest mb-8 animate-pulse">
+    Z3RO PROTOCOL · ENTRY POINT
+  </h1>
+
+  <div class="bg-slate-800 border border-slate-700 rounded-2xl p-10 w-full max-w-md space-y-8 shadow-xl relative overflow-hidden">
+    
+    <div class="flex justify-center">
+      <div id="scan-ring" class="w-28 h-28 bg-slate-900 rounded-full flex items-center justify-center border-2 border-violet-600 scanner transition-all duration-500">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#7c3aed" class="w-12 h-12 transition-colors duration-500" id="scan-icon">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M7.875 14.25l1.214 1.942a2.25 2.25 0 001.908 1.058h2.006c.776 0 1.497-.4 1.908-1.058l1.214-1.942M2.41 9a15.356 15.356 0 011.112-2.316m1.214-1.942C5.908 3.52 7.158 3 8.448 3h7.104c1.29 0 2.54.52 3.712 1.742l.86 1.134m-18.068 9.92a15.356 15.356 0 010-4.632m3.632 9.92l.86-1.134" />
+        </svg>
+      </div>
+    </div>
+
+    <p class="text-slate-400 text-sm" id="status-text">Scan credentials or input access code.</p>
+
+    <form id="login-form" class="space-y-4" onsubmit="event.preventDefault(); simulateLogin();">
+      <div class="relative">
+          <input type="password" id="access-code" placeholder="// Access Code" class="w-full px-4 py-3 bg-slate-900 border border-slate-600 text-white text-center rounded-full focus:outline-none focus:ring-2 focus:ring-violet-600 transition pr-12" required />
+          <div onclick="togglePassword()" class="absolute inset-y-0 right-4 flex items-center cursor-pointer text-slate-500 hover:text-white transition">👁️</div>
+      </div>
+      <button type="submit" id="submit-btn" class="w-full py-3 bg-violet-600 hover:bg-violet-500 text-white font-bold uppercase rounded-full transition shadow-[0_0_15px_rgba(124,58,237,0.3)]">Initiate Entry</button>
+    </form>
+
+    <p class="text-[10px] text-slate-500 pt-6 uppercase tracking-wider">Terminal monitored by Aetron · Logged by Z3RO Audit</p>
+  </div>
+
+  <div class="mt-10">
+    <a href="../index.html" class="text-slate-600 hover:text-white text-sm transition-colors">// Return to Field Gate</a>
+  </div>
+
+  <script>
+    function togglePassword() { const x = document.getElementById("access-code"); x.type = x.type === "password" ? "text" : "password"; }
+    
+    function simulateLogin() {
+        const btn = document.getElementById('submit-btn');
+        const ring = document.getElementById('scan-ring');
+        const icon = document.getElementById('scan-icon');
+        const status = document.getElementById('status-text');
+
+        btn.innerHTML = "Verifying...";
+        btn.classList.add('opacity-70', 'cursor-not-allowed');
+        status.innerHTML = "Checking resonance signature...";
+        status.classList.add('text-violet-400', 'animate-pulse');
+
+        setTimeout(() => {
+            btn.innerHTML = "ACCESS GRANTED";
+            btn.classList.replace('bg-violet-600', 'bg-green-600');
+            ring.classList.add('access-granted');
+            ring.style.borderColor = "#10b981";
+            icon.setAttribute('stroke', '#10b981');
+            status.innerHTML = "Identity Confirmed. Redirecting...";
+            status.classList.replace('text-violet-400', 'text-green-400');
+            
+            sessionStorage.setItem("z3ro_session", "active");
+            
+            setTimeout(() => { window.location.href = 'dashboard.html'; }, 1000);
+        }, 1500);
+    }
+
+    document.addEventListener('contextmenu', event => event.preventDefault());
+  </script>
+</body>
+</html>

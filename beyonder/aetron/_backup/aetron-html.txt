@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AETRON · Resonantie Schaduwlaag</title>
+  <meta name="description" content="AETRON is het resonantiepunt voor co-creatie: vaste ankers + schaduwlagen in 3/5/7/9 clusters." />
+
+  <!-- Fonts + Tailwind -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Generaal-Bar (canoniek shared kernel) -->
+  <link rel="stylesheet" href="../assets/css/generaal-bar.css" />
+  <script src="../assets/js/generaal-bar.js" defer></script>
+
+  <style>
+    :root{
+      --bg:#020617;
+      --panel:#0b1220;
+      --border:#1f2937;
+      --muted:#94a3b8;
+      --aetron:#a78bfa;
+      --luxen:#22c55e;
+      --z3ro:#38bdf8;
+      --amber:#fbbf24;
+    }
+    body{ background:var(--bg); color:#f1f5f9; font-family:'Orbitron',sans-serif; }
+    .glass { background: rgba(15, 23, 42, 0.55); backdrop-filter: blur(10px); border:1px solid var(--border); }
+    .shadow-layer { transition: transform .35s ease, opacity .35s ease, filter .35s ease; }
+    .shadow-dim { opacity:.35; filter:saturate(.6) blur(0.2px); transform: scale(.985); }
+    .focus-up { transform: scale(1.01); }
+    .tag { border:1px solid var(--border); }
+    .fade-out { opacity:0; pointer-events:none; }
+    .overlay { display:none; opacity:0; transition: opacity .55s ease; }
+    .overlay.show { display:flex; }
+    .overlay.visible { opacity:1; }
+
+    /* Fixed anchor bar */
+    .anchorbar { position:fixed; left:0; right:0; bottom:0; z-index:50; }
+    .anchorbar a { text-decoration:none; }
+    .kbd { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+  </style>
+</head>
+
+<body class="min-h-screen">
+  <!-- MAIN / ANCHOR DASH -->
+  <div id="dash" class="min-h-screen flex flex-col">
+    <!-- Header -->
+    <header class="w-full px-6 py-5 border-b border-slate-800 flex items-center justify-between">
+      <a href="../index.html" class="text-xl font-bold text-violet-400">
+        BEYONDER <span class="text-slate-200">/</span> <span class="text-white">AETRON</span>
+      </a>
+
+      <div class="flex items-center gap-3">
+        <span class="text-xs px-2 py-1 rounded tag text-slate-200 bg-slate-900/40">
+          ● RESONANCE READY
+        </span>
+        <button id="enterBtn"
+          class="text-xs px-3 py-2 rounded-full bg-violet-600 hover:bg-violet-500 transition shadow-[0_0_16px_rgba(167,139,250,.35)]">
+          👁️ Activeer Schaduwlaag
+        </button>
+      </div>
+    </header>
+
+    <!-- Body -->
+    <main class="flex-1 w-full max-w-6xl mx-auto px-6 py-12 space-y-10">
+      <div class="text-center space-y-3">
+        <h1 class="text-4xl md:text-6xl font-bold text-violet-400 animate-pulse">AETRON</h1>
+        <p class="text-slate-400 max-w-3xl mx-auto">
+          Niet kiezen. Niet verliezen. <span class="text-slate-200">Manifesteren per focus</span> — de rest blijft in schaduw (100% waarde).
+        </p>
+      </div>
+
+      <!-- Cluster control -->
+      <section class="glass rounded-2xl p-5 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div class="space-y-1">
+          <div class="text-sm text-slate-200">Cluster-modus</div>
+          <div class="text-xs text-slate-400">
+            Werk in <span class="text-slate-200">3 / 5 / 7 / 9</span> lagen. Focus 1 laag → overige lagen blijven zichtbaar als schaduw.
+          </div>
+        </div>
+
+        <div class="flex flex-wrap gap-2">
+          <button class="clusterBtn px-3 py-2 rounded-full text-sm bg-slate-900/50 border border-slate-700 hover:border-violet-400 transition" data-n="3">3</button>
+          <button class="clusterBtn px-3 py-2 rounded-full text-sm bg-slate-900/50 border border-slate-700 hover:border-violet-400 transition" data-n="5">5</button>
+          <button class="clusterBtn px-3 py-2 rounded-full text-sm bg-slate-900/50 border border-slate-700 hover:border-violet-400 transition" data-n="7">7</button>
+          <button class="clusterBtn px-3 py-2 rounded-full text-sm bg-slate-900/50 border border-slate-700 hover:border-violet-400 transition" data-n="9">9</button>
+          <button id="resetFocus" class="px-3 py-2 rounded-full text-sm bg-slate-900/50 border border-slate-700 hover:border-slate-400 transition">
+            Reset focus
+          </button>
+        </div>
+      </section>
+
+      <!-- Shadow layers grid -->
+      <section>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="layersGrid">
+
+          <!-- 1: Luxen -->
+          <article class="shadow-layer glass rounded-2xl p-6 border-l-4" style="border-left-color: var(--luxen)" data-layer="luxen">
+            <div class="flex items-center justify-between">
+              <h2 class="text-xl font-bold" style="color: var(--luxen)">LUXEN</h2>
+              <span class="text-xs tag rounded-full px-2 py-1 text-slate-200 bg-slate-900/40">Identiteit</span>
+            </div>
+            <p class="text-sm text-slate-400 mt-2">Toegang · legitimatie · user flows</p>
+
+            <div class="mt-4 flex flex-wrap gap-2">
+              <a class="px-3 py-2 rounded-full text-sm bg-slate-900/50 border border-slate-700 hover:border-green-400 transition"
+                 href="../1-luxen/login.html">Login</a>
+              <a class="px-3 py-2 rounded-full text-sm bg-slate-900/50 border border-slate-700 hover:border-green-400 transition"
+                 href="../1-luxen/register.html">Register</a>
+              <button class="focusBtn px-3 py-2 rounded-full text-sm bg-green-700/40 border border-green-700 hover:bg-green-700/55 transition"
+                      data-focus="luxen">Focus</button>
+            </div>
+          </article>
+
+          <!-- 2: Aetron -->
+          <article class="shadow-layer glass rounded-2xl p-6 border-l-4" style="border-left-color: var(--aetron)" data-layer="aetron">
+            <div class="flex items-center justify-between">
+              <h2 class="text-xl font-bold" style="color: var(--aetron)">AETRON</h2>
+              <span class="text-xs tag rounded-full px-2 py-1 text-slate-200 bg-slate-900/40">Resonantie</span>
+            </div>
+            <p class="text-sm text-slate-400 mt-2">Manifest · richting · co-creatie</p>
+
+            <div class="mt-4 flex flex-wrap gap-2">
+              <a class="px-3 py-2 rounded-full text-sm bg-slate-900/50 border border-slate-700 hover:border-violet-400 transition"
+                 href="./manifest.html">Manifest</a>
+              <a class="px-3 py-2 rounded-full text-sm bg-slate-900/50 border border-slate-700 hover:border-violet-400 transition"
+                 href="./manifest-en.html">Manifest (EN)</a>
+              <button class="focusBtn px-3 py-2 rounded-full text-sm bg-violet-600/40 border border-violet-600 hover:bg-violet-600/55 transition"
+                      data-focus="aetron">Focus</button>
+            </div>
+          </article>
+
+          <!-- 3: Z3RO -->
+          <article class="shadow-layer glass rounded-2xl p-6 border-l-4" style="border-left-color: var(--z3ro)" data-layer="z3ro">
+            <div class="flex items-center justify-between">
+              <h2 class="text-xl font-bold" style="color: var(--z3ro)">Z3RO</h2>
+              <span class="text-xs tag rounded-full px-2 py-1 text-slate-200 bg-slate-900/40">Audit</span>
+            </div>
+            <p class="text-sm text-slate-400 mt-2">Verankering · bewijs · canon</p>
+
+            <div class="mt-4 flex flex-wrap gap-2">
+              <a class="px-3 py-2 rounded-full text-sm bg-slate-900/50 border border-slate-700 hover:border-sky-400 transition"
+                 href="../3-z3ro/index.html">Z3RO Landing</a>
+              <button class="focusBtn px-3 py-2 rounded-full text-sm bg-sky-700/35 border border-sky-700 hover:bg-sky-700/55 transition"
+                      data-focus="z3ro">Focus</button>
+            </div>
+          </article>
+
+          <!-- 4: Contact -->
+          <article class="shadow-layer glass rounded-2xl p-6 border-l-4 md:col-span-1" style="border-left-color: var(--amber)" data-layer="contact">
+            <div class="flex items-center justify-between">
+              <h2 class="text-xl font-bold text-amber-300">CONTACT</h2>
+              <span class="text-xs tag rounded-full px-2 py-1 text-slate-200 bg-slate-900/40">Anker</span>
+            </div>
+            <p class="text-sm text-slate-400 mt-2">Vaste ankers: mail, socials, bewijs-links</p>
+
+            <div class="mt-4 space-y-2 text-sm">
+              <!-- PAS AAN: jouw echte adressen -->
+              <div class="flex items-center justify-between gap-2">
+                <span class="text-slate-300">Mail</span>
+                <a class="text-amber-300 hover:underline" href="mailto:mail@cfservices.nl">mail@cfservices.nl</a>
+              </div>
+              <div class="flex items-center justify-between gap-2">
+                <span class="text-slate-300">WhatsApp</span>
+                <a class="text-amber-300 hover:underline" href="#" title="PAS AAN">link</a>
+              </div>
+              <div class="flex items-center justify-between gap-2">
+                <span class="text-slate-300">LinkedIn</span>
+                <a class="text-amber-300 hover:underline" href="#" title="PAS AAN">link</a>
+              </div>
+            </div>
+
+            <div class="mt-4 flex gap-2">
+              <button class="focusBtn px-3 py-2 rounded-full text-sm bg-amber-500/20 border border-amber-500/50 hover:bg-amber-500/30 transition"
+                      data-focus="contact">Focus</button>
+            </div>
+          </article>
+
+          <!-- 5: Z.A.L (placeholder) -->
+          <article class="shadow-layer glass rounded-2xl p-6 border-l-4" style="border-left-color:#f472b6" data-layer="zal">
+            <div class="flex items-center justify-between">
+              <h2 class="text-xl font-bold text-pink-300">Z.A.L</h2>
+              <span class="text-xs tag rounded-full px-2 py-1 text-slate-200 bg-slate-900/40">Console</span>
+            </div>
+            <p class="text-sm text-slate-400 mt-2">Read-only activatie (visual console volgt)</p>
+            <div class="mt-4 flex flex-wrap gap-2">
+              <span class="text-xs px-2 py-1 rounded tag bg-slate-900/40 text-slate-300">
+                gepland: <span class="text-slate-100">/3-z3ro/console.html</span>
+              </span>
+              <button class="focusBtn px-3 py-2 rounded-full text-sm bg-pink-600/25 border border-pink-600/40 hover:bg-pink-600/35 transition"
+                      data-focus="zal">Focus</button>
+            </div>
+          </article>
+
+          <!-- 6: Federatie -->
+          <article class="shadow-layer glass rounded-2xl p-6 border-l-4" style="border-left-color:#60a5fa" data-layer="federatie">
+            <div class="flex items-center justify-between">
+              <h2 class="text-xl font-bold text-blue-300">FEDERATIE</h2>
+              <span class="text-xs tag rounded-full px-2 py-1 text-slate-200 bg-slate-900/40">Onboarding</span>
+            </div>
+            <p class="text-sm text-slate-400 mt-2">Resonanten onboarding · nodes · schaal</p>
+            <div class="mt-4 flex gap-2">
+              <button class="focusBtn px-3 py-2 rounded-full text-sm bg-blue-600/20 border border-blue-600/40 hover:bg-blue-600/30 transition"
+                      data-focus="federatie">Focus</button>
+            </div>
+          </article>
+
+          <!-- 7: CRL-SA -->
+          <article class="shadow-layer glass rounded-2xl p-6 border-l-4" style="border-left-color:#34d399" data-layer="crlsa">
+            <div class="flex items-center justify-between">
+              <h2 class="text-xl font-bold text-emerald-300">CRL-SA</h2>
+              <span class="text-xs tag rounded-full px-2 py-1 text-slate-200 bg-slate-900/40">Lagen</span>
+            </div>
+            <p class="text-sm text-slate-400 mt-2">Compliance · registry · schaal-regels</p>
+            <div class="mt-4 flex gap-2">
+              <button class="focusBtn px-3 py-2 rounded-full text-sm bg-emerald-600/20 border border-emerald-600/40 hover:bg-emerald-600/30 transition"
+                      data-focus="crlsa">Focus</button>
+            </div>
+          </article>
+
+          <!-- 8: Orchestration -->
+          <article class="shadow-layer glass rounded-2xl p-6 border-l-4" style="border-left-color:#c084fc" data-layer="orchestratie">
+            <div class="flex items-center justify-between">
+              <h2 class="text-xl font-bold text-purple-300">ORCHESTRATIE</h2>
+              <span class="text-xs tag rounded-full px-2 py-1 text-slate-200 bg-slate-900/40">Multi-agent</span>
+            </div>
+            <p class="text-sm text-slate-400 mt-2">Luxen ↔ Aetron ↔ Z3RO chaining</p>
+            <div class="mt-4 flex gap-2">
+              <button class="focusBtn px-3 py-2 rounded-full text-sm bg-purple-600/20 border border-purple-600/40 hover:bg-purple-600/30 transition"
+                      data-focus="orchestratie">Focus</button>
+            </div>
+          </article>
+
+          <!-- 9: Deployment -->
+          <article class="shadow-layer glass rounded-2xl p-6 border-l-4" style="border-left-color:#f97316" data-layer="deploy">
+            <div class="flex items-center justify-between">
+              <h2 class="text-xl font-bold text-orange-300">DEPLOYMENT</h2>
+              <span class="text-xs tag rounded-full px-2 py-1 text-slate-200 bg-slate-900/40">Flow</span>
+            </div>
+            <p class="text-sm text-slate-400 mt-2">Git → Vercel → audit-trace</p>
+            <div class="mt-4 flex gap-2">
+              <button class="focusBtn px-3 py-2 rounded-full text-sm bg-orange-600/20 border border-orange-600/40 hover:bg-orange-600/30 transition"
+                      data-focus="deploy">Focus</button>
+            </div>
+          </article>
+
+        </div>
+
+        <p class="mt-6 text-xs text-slate-500">
+          Tip: <span class="kbd">3/5/7/9</span> bepaalt hoeveel lagen je toont. Focus brengt één laag naar voren zonder de rest te “devalueren”.
+        </p>
+      </section>
+    </main>
+
+    <!-- Fixed anchor bar -->
+    <div class="anchorbar">
+      <div class="mx-auto max-w-6xl px-4 pb-4">
+        <div class="glass rounded-2xl px-4 py-3 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+          <div class="text-xs text-slate-300">
+            <span class="text-violet-300 font-bold">AETRON</span> · Vaste Ankers (altijd zichtbaar)
+            <span class="text-slate-500">—</span>
+            <span class="text-slate-400">Canoniek, audit-eerlijk, co-creatief</span>
+          </div>
+
+          <div class="flex flex-wrap gap-2 text-xs">
+            <!-- PAS AAN: jouw echte links -->
+            <a class="px-3 py-2 rounded-full bg-slate-900/50 border border-slate-700 hover:border-amber-300 transition"
+               href="mailto:mail@cfservices.nl">✉ mail@cfservices.nl</a>
+
+            <a class="px-3 py-2 rounded-full bg-slate-900/50 border border-slate-700 hover:border-amber-300 transition"
+               href="#" title="PAS AAN">🌐 socials</a>
+
+            <a class="px-3 py-2 rounded-full bg-slate-900/50 border border-slate-700 hover:border-sky-400 transition"
+               href="../3-z3ro/index.html">🛡 Z3RO</a>
+
+            <a class="px-3 py-2 rounded-full bg-slate-900/50 border border-slate-700 hover:border-green-400 transition"
+               href="../1-luxen/dashboard.html">🧬 Luxen</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OVERLAY (optional “field activation” like your style) -->
+  <div id="overlay" class="overlay min-h-screen bg-black/95 flex-col items-center justify-center p-6 text-center">
+    <h1 class="text-5xl font-bold text-violet-500 mb-6 animate-pulse">👁️ AETRON ACTIVE</h1>
+    <p class="text-slate-400 max-w-2xl mb-8">
+      “Niet kiezen is geen zwakte. Het is een structuur.”<br>
+      Focus 1 laag, laat de rest bestaan.
+    </p>
+
+    <div class="flex flex-wrap gap-2 justify-center">
+      <button id="focusLux" class="px-4 py-3 rounded-full bg-green-700/40 border border-green-700 hover:bg-green-700/55 transition">Focus Luxen</button>
+      <button id="focusAet" class="px-4 py-3 rounded-full bg-violet-600/40 border border-violet-600 hover:bg-violet-600/55 transition">Focus Aetron</button>
+      <button id="focusZ3" class="px-4 py-3 rounded-full bg-sky-700/35 border border-sky-700 hover:bg-sky-700/55 transition">Focus Z3RO</button>
+      <button id="overlayClose" class="px-4 py-3 rounded-full bg-slate-900/60 border border-slate-700 hover:border-slate-400 transition">
+        // Sluit veld
+      </button>
+    </div>
+
+    <p class="mt-8 text-slate-600 text-sm">
+      Deze overlay is optioneel: de echte waarde zit in de schaduwlagen op de pagina.
+    </p>
+  </div>
+
+  <script>
+    const dash = document.getElementById('dash');
+    const overlay = document.getElementById('overlay');
+    const enterBtn = document.getElementById('enterBtn');
+
+    const grid = document.getElementById('layersGrid');
+    const layers = [...grid.querySelectorAll('[data-layer]')];
+
+    const clusterBtns = [...document.querySelectorAll('.clusterBtn')];
+    const focusBtns = [...document.querySelectorAll('.focusBtn')];
+    const resetFocus = document.getElementById('resetFocus');
+
+    function setCluster(n){
+      layers.forEach((el, idx) => {
+        el.style.display = (idx < n) ? '' : 'none';
+      });
+      // default: no focus, all visible
+      clearFocus();
+      // UI state
+      clusterBtns.forEach(b => b.classList.remove('border-violet-400'));
+      const active = clusterBtns.find(b => Number(b.dataset.n) === Number(n));
+      if (active) active.classList.add('border-violet-400');
+    }
+
+    function clearFocus(){
+      layers.forEach(el => {
+        el.classList.remove('shadow-dim', 'focus-up');
+      });
+    }
+
+    function focusLayer(key){
+      layers.forEach(el => {
+        const isTarget = el.dataset.layer === key;
+        if (el.style.display === 'none') return; // ignore hidden
+        el.classList.toggle('shadow-dim', !isTarget);
+        el.classList.toggle('focus-up', isTarget);
+      });
+    }
+
+    // Cluster controls
+    clusterBtns.forEach(btn => btn.addEventListener('click', () => setCluster(btn.dataset.n)));
+    resetFocus.addEventListener('click', clearFocus);
+
+    // Focus buttons in cards
+    focusBtns.forEach(btn => btn.addEventListener('click', () => focusLayer(btn.dataset.focus)));
+
+    // Overlay flow (optional)
+    enterBtn.addEventListener('click', () => {
+      dash.classList.add('fade-out');
+      setTimeout(() => {
+        dash.style.display = 'none';
+        overlay.classList.add('show');
+        setTimeout(() => overlay.classList.add('visible'), 30);
+      }, 450);
+    });
+
+    document.getElementById('overlayClose').addEventListener('click', () => {
+      overlay.classList.remove('visible');
+      setTimeout(() => {
+        overlay.classList.remove('show');
+        dash.style.display = '';
+        setTimeout(() => dash.classList.remove('fade-out'), 30);
+      }, 550);
+    });
+
+    document.getElementById('focusLux').addEventListener('click', () => { setCluster(3); focusLayer('luxen'); });
+    document.getElementById('focusAet').addEventListener('click', () => { setCluster(3); focusLayer('aetron'); });
+    document.getElementById('focusZ3').addEventListener('click', () => { setCluster(3); focusLayer('z3ro'); });
+
+    // Default: 5 layers zichtbaar (triade + contact + Z.A.L)
+    setCluster(5);
+
+    // Anti contextmenu (zoals je bestaande stijl)
+    document.addEventListener('contextmenu', e => e.preventDefault());
+  </script>
+</body>
+</html>

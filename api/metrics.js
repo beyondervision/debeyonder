@@ -1,0 +1,29 @@
+import { kv } from "@vercel/kv";
+
+export default async function handler(req, res) {
+  try {
+    const total = (await kv.get("gate:total")) || 0;
+
+    const statuses = ["403", "404", "451", "503"];
+    const byStatus = {};
+
+    for (const s of statuses) {
+      const v = await kv.get(`gate:status:${s}`);
+      if (v) byStatus[s] = v;
+    }
+
+    const lastEvent = await kv.lindex("gate:events", 0);
+    const lastSeen = lastEvent ? JSON.parse(lastEvent).timestamp : null;
+
+    res.status(200).json({
+      total,
+      byStatus,
+      lastSeen
+    });
+  } catch (e) {
+    console.error("METRICS_READ_FAIL", e.message);
+    res.status(500).json({
+      error: "metrics_unavailable"
+    });
+  }
+}

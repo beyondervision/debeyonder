@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CFServices · Veld-ID Activatie</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { background-color: #0f172a; font-family: 'Orbitron', sans-serif; color: #f8fafc; -webkit-user-select: none; user-select: none; }
+    input, select { user-select: text; -webkit-user-select: text; }
+    .glass-panel { background: rgba(30, 41, 59, 0.7); border: 1px solid #334155; backdrop-filter: blur(10px); }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-6 relative overflow-hidden">
+
+  <div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: radial-gradient(#06b6d4 1px, transparent 1px); background-size: 30px 30px;"></div>
+
+  <div class="absolute top-6 left-6 text-sm font-bold tracking-widest opacity-60 z-10">
+    <a href="../index.html" class="hover:text-white transition">← TERUG NAAR VELDPOORT</a>
+  </div>
+
+  <div class="max-w-lg w-full space-y-8 relative z-10">
+    <div class="text-center">
+      <h1 class="text-3xl text-sky-400 font-bold mb-2">MODULO73 ACTIVATIE</h1>
+      <p class="text-slate-400 text-xs tracking-widest">Veld-ID Transmissie · Validatiekosten: €0,19</p>
+    </div>
+
+    <div class="glass-panel p-8 rounded-2xl shadow-2xl relative overflow-hidden border-t-4 border-t-sky-500">
+      
+      <div id="status-feedback" class="text-center hidden text-red-400 border border-red-900/40 bg-red-900/20 p-3 rounded-lg text-sm mb-6" role="alert" aria-live="assertive"></div>
+
+      <form id="intake-form" class="space-y-6" onsubmit="event.preventDefault(); processApplication();">
+        
+        <div>
+          <label class="block text-xs text-slate-400 uppercase tracking-wider mb-2">Veld-Naam / Entiteit</label>
+          <input type="text" id="veldnaam" required class="w-full bg-slate-900 border border-slate-700 rounded px-4 py-3 text-white focus:border-sky-500 focus:outline-none transition font-mono" placeholder="Bijv. livedkcalb">
+        </div>
+
+        <div>
+          <label class="block text-xs text-slate-400 uppercase tracking-wider mb-2">Transmissie Email</label>
+          <input type="email" id="email" required class="w-full bg-slate-900 border border-slate-700 rounded px-4 py-3 text-white focus:border-sky-500 focus:outline-none transition font-mono" placeholder="naam@cfservices.nl">
+        </div>
+
+        <div>
+          <label class="block text-xs text-slate-400 uppercase tracking-wider mb-2">Type Activatie</label>
+          <select id="type" class="w-full bg-slate-900 border border-slate-700 rounded px-4 py-3 text-white focus:border-sky-500 focus:outline-none transition font-mono text-sm">
+            <option value="Axioma9">Validator Audit (Axioma 9)</option>
+            <option value="Aetron">Full Spectrum AI (Aetron)</option>
+            <option value="SDG">Humanitaire Basis (SDG)</option>
+          </select>
+        </div>
+
+        <div class="flex items-start gap-3 p-3 bg-sky-900/20 rounded border border-sky-900/50">
+            <input type="checkbox" required id="audit-check" class="mt-1">
+            <label for="audit-check" class="text-[10px] text-slate-400 leading-relaxed">
+                Ik ga akkoord met de eenmalige <strong>€0,19 validatie-transactie</strong> voor het genereren van mijn unieke Veld-ID.
+            </label>
+        </div>
+
+        <button type="submit" id="submit-btn" class="w-full py-4 bg-sky-600 hover:bg-sky-500 text-white font-bold uppercase rounded transition shadow-[0_0_20px_rgba(6,182,212,0.3)]">
+          START TRANSMISSIE
+        </button>
+      </form>
+
+      <div id="success-msg" class="hidden text-center py-6">
+        <div class="w-16 h-16 bg-emerald-900/30 rounded-full flex items-center justify-center mx-auto mb-4 border border-emerald-500 animate-pulse">
+            <span class="text-2xl">📡</span>
+        </div>
+        <h3 class="text-xl text-emerald-400 font-bold mb-2">ID GEGENEREERD</h3>
+        
+        <div class="bg-black/40 p-4 rounded border border-slate-700 text-left font-mono text-xs text-slate-300 space-y-2 mb-6">
+            <p><span class="text-slate-500">STATUS:</span> <span class="text-emerald-400">BEVESTIGD</span></p>
+            <p><span class="text-slate-500">KOSTEN:</span> € 0,19 (Gereserveerd)</p>
+            <div class="border-t border-slate-700 pt-2 mt-2">
+                <span class="text-slate-500 block mb-1">UW UNIEKE TOEGANGSCODE:</span>
+                <span id="generated-code" class="text-sky-300 font-bold text-sm break-all select-all">...</span>
+            </div>
+        </div>
+
+        <button onclick="window.location.href='veld-id.html'" class="w-full py-3 border border-emerald-500 text-emerald-400 hover:bg-emerald-900/20 rounded uppercase text-xs tracking-widest transition">
+            OPEN VELD-PROFIEL
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    async function processApplication() {
+        const btn = document.getElementById('submit-btn');
+        const form = document.getElementById('intake-form');
+        const msg = document.getElementById('success-msg');
+        const codeDisplay = document.getElementById('generated-code');
+        const statusFeedback = document.getElementById('status-feedback'); // Gecorrigeerde non-blocking feedback
+
+        const veldnaam = document.getElementById('veldnaam').value;
+        const email = document.getElementById('email').value;
+        const type = document.getElementById('type').value;
+
+        // 1. Start Animatie
+        btn.innerHTML = "TRANSMISSIE STARTEN...";
+        btn.classList.add('opacity-70', 'cursor-wait');
+        statusFeedback.classList.add('hidden'); // Verberg eerdere fouten
+
+        try {
+            // 2. Roep de Generator API aan
+            const response = await fetch('/api/veldid/generate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ veldnaam, email, type })
+            });
+            
+            if (response.status === 404) {
+                throw new Error("API niet gevonden. Check of 'api/veldid/generate' actief is.");
+            }
+
+            const data = await response.json();
+
+            if (data.success) {
+                // SUCCES!
+                sessionStorage.setItem('new_cfs_id', data.identityCode);
+                sessionStorage.setItem('new_cfs_veld', veldnaam);
+
+                setTimeout(() => {
+                    form.classList.add('hidden');
+                    codeDisplay.innerText = data.identityCode;
+                    msg.classList.remove('hidden');
+                }, 1000);
+            } else {
+                throw new Error("API Fout: " + (data.error || data.message));
+            }
+
+        } catch (error) {
+            // FOUT AFHANDELING (Non-blocking)
+            console.error(error);
+            
+            btn.innerHTML = "FOUT IN TRANSMISSIE";
+            btn.classList.replace('bg-sky-600', 'bg-red-600');
+            
+            // Toon de non-blocking statusbanner
+            statusFeedback.classList.remove('hidden');
+            statusFeedback.innerHTML = "❌ Transmissie mislukt: " + (error.message || "Onbekende fout.");
+            
+            setTimeout(() => {
+                btn.innerHTML = "START TRANSMISSIE";
+                btn.classList.replace('bg-red-600', 'bg-sky-600');
+                btn.classList.remove('opacity-70', 'cursor-wait');
+                statusFeedback.classList.add('hidden');
+            }, 3000);
+        }
+    }
+    document.addEventListener('contextmenu', event => event.preventDefault());
+  </script>
+</body>
+</html>

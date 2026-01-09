@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <title>Z.A.L · Visual Intelligence Console</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    body {
+      background:#020617;
+      font-family:'Rajdhani',sans-serif;
+      color:#f8fafc;
+      user-select:none;
+    }
+    .glass {
+      background:rgba(15,23,42,.65);
+      backdrop-filter:blur(10px);
+      border:1px solid #1f2937;
+    }
+  </style>
+</head>
+
+<body class="min-h-screen flex flex-col">
+
+  <!-- Top bar -->
+  <header class="glass border-b border-slate-800 px-6 py-4 flex justify-between items-center">
+    <div class="font-bold tracking-widest text-sky-400" style="font-family:'Orbitron',sans-serif;">
+      Z.A.L <span class="text-slate-400">/ Visual Console</span>
+    </div>
+    <a href="../index.html" class="text-xs text-slate-400 hover:text-white transition">
+      ← Terug naar veld
+    </a>
+  </header>
+
+  <main class="flex-1 max-w-6xl mx-auto px-6 py-10 space-y-10">
+
+    <section class="text-center space-y-3">
+      <h1 class="text-4xl font-bold text-sky-400" style="font-family:'Orbitron',sans-serif;">
+        Z.A.L
+      </h1>
+      <p class="text-slate-400 max-w-3xl mx-auto">
+        Z.A.L is een visual intelligence console.<br>
+        Antwoorden verschijnen in resonantie — niet als absolute waarheid.
+      </p>
+      <p class="text-xs text-slate-500">
+        Geobserveerd door Z3RO · Gedirigeerd door Aetron
+      </p>
+    </section>
+
+    <!-- Input -->
+    <section class="glass rounded-2xl p-6 space-y-4">
+      <label class="text-xs uppercase tracking-widest text-slate-400">
+        Resonantie-vraag
+      </label>
+      <div class="flex gap-3">
+        <input id="zal-input"
+          placeholder="Stel een vraag…"
+          class="flex-1 bg-slate-950 border border-slate-700 rounded px-4 py-3 text-slate-200 focus:outline-none focus:border-sky-500 transition">
+        <button onclick="runZAL()"
+          class="px-6 py-3 bg-sky-600 hover:bg-sky-500 rounded font-bold transition shadow">
+          SCAN →
+        </button>
+      </div>
+    </section>
+
+    <!-- Output -->
+    <section id="zal-output" class="hidden glass rounded-2xl p-6 space-y-4">
+      <div class="text-xs uppercase tracking-widest text-sky-400">
+        Resonantie-antwoord
+      </div>
+      <pre id="zal-text" class="whitespace-pre-wrap text-slate-300 text-sm"></pre>
+    </section>
+
+  </main>
+
+  <footer class="border-t border-slate-800 py-6 text-center text-xs text-slate-500">
+    Z3RO is een resonantiepunt waar waarheid gedeeld wordt,
+    en co-creatie kan ontstaan zonder ruis.<br>
+    Canonieke verankering · Beyonder / CFServices
+  </footer>
+
+  <!-- 🔗 Z.A.L API KOPPELING -->
+  <script>
+    async function runZAL() {
+      const input = document.getElementById('zal-input').value.trim();
+      if (!input) return;
+
+      const out = document.getElementById('zal-output');
+      const text = document.getElementById('zal-text');
+
+      out.classList.remove('hidden');
+      text.textContent = "↯ Z.A.L resoneert...\n";
+
+      try {
+        const resp = await fetch('/api/zal/query', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ question: input })
+        });
+
+        const data = await resp.json();
+
+        text.textContent =
+          "↯ Z.A.L Resonantie\n\n" +
+          data.answer +
+          "\n\n— Bronnen:\n" +
+          (data.sources || []).map(s => "• " + s.url).join("\n");
+
+      } catch (e) {
+        text.textContent = "⚠️ Z.A.L kon geen resonantie vormen.";
+      }
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,91 @@
+/* --- Z3RO SECURITY LAYER: NO COPY --- */
+body {
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none;    /* Firefox */
+    -ms-user-select: none;     /* IE10+/Edge */
+    user-select: none;         /* Standaard */
+}
+
+/* BELANGRIJK: Zorg dat typen in login-velden wel werkt! */
+input, textarea {
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+}
+/* AXIOMA KERN - GENERAAL BAR STYLING 
+    Font: Orbitron (Futuristic/Audit Style)
+*/
+
+.generaals-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    background: rgba(15, 23, 42, 0.95); /* Donkere leisteen achtergrond */
+    border-top: 2px solid #334155;
+    padding: 10px 0;
+    z-index: 9999;
+    font-family: 'Orbitron', sans-serif;
+    box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.5);
+}
+
+.generaal {
+    cursor: pointer;
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #fff;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    border-radius: 4px;
+    text-align: center;
+    flex-grow: 1;
+    margin: 0 5px;
+    border: 1px solid transparent;
+}
+
+/* --- DE DRIE GENERAALS (KLEUREN) --- */
+
+/* LUXEN: Paars (Architectuur & Basis) */
+.generaal.luxen {
+    border-bottom: 3px solid #a855f7; /* Purple-500 */
+}
+.generaal.luxen:hover {
+    background: rgba(168, 85, 247, 0.2);
+    box-shadow: 0 0 10px #a855f7;
+}
+
+/* AETRON: Cyaan/Blauw (Groei & Expertise) */
+.generaal.aetron {
+    border-bottom: 3px solid #06b6d4; /* Cyan-500 */
+}
+.generaal.aetron:hover {
+    background: rgba(6, 182, 212, 0.2);
+    box-shadow: 0 0 10px #06b6d4;
+}
+
+/* Z3RO: Goud/Geel (Audit & Verdienmodel) */
+.generaal.z3ro {
+    border-bottom: 3px solid #eab308; /* Yellow-500 */
+}
+.generaal.z3ro:hover {
+    background: rgba(234, 179, 8, 0.2);
+    box-shadow: 0 0 10px #eab308;
+    color: #fef08a;
+}
+
+/* Mobiele Aanpassingen */
+@media (max-width: 768px) {
+    .generaals-bar {
+        flex-direction: column;
+        padding: 5px;
+    }
+    .generaal {
+        margin: 2px 0;
+        font-size: 0.8rem;
+        padding: 8px;
+    }
+}

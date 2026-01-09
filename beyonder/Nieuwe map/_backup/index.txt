@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CF Services · Enterprise IT & AI Solutions</title>
+    <meta name="description" content="CF Services: Uw partner voor Hardware, Software en AI-Integratie.">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/generaal-bar.css"> 
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        :root { --cf-blue: #0f172a; --cf-light: #f8fafc; --cf-accent: #38bdf8; --cf-gray: #64748b; }
+        body { font-family: 'Roboto', sans-serif; background-color: var(--cf-light); color: var(--cf-blue); }
+        .site-header { background: white; border-bottom: 1px solid #e2e8f0; padding: 20px 0; }
+        .hero { background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: white; padding: 60px 20px; text-align: center; }
+        .service-card { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); border-top: 4px solid var(--cf-accent); transition: transform 0.2s; }
+        .service-card:hover { transform: translateY(-5px); }
+        .card-link { display: inline-block; margin-top: 15px; color: var(--cf-accent); font-weight: bold; text-decoration: none; }
+        .typing-effect { border-right: 2px solid #06b6d4; animation: blink 1s step-end infinite; }
+        @keyframes blink { 50% { border-color: transparent; } }
+        /* Persona Selectors */
+        .persona-btn { opacity: 0.5; transition: all 0.3s; border: 1px solid transparent; }
+        .persona-btn:hover { opacity: 1; }
+        .persona-btn.active { opacity: 1; border-color: currentColor; box-shadow: 0 0 15px currentColor; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col" style="-webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;">
+  
+  <div class="absolute top-4 right-6 z-50 text-sm font-bold tracking-widest bg-white/10 px-2 py-1 rounded backdrop-blur-md">
+    <span class="text-sky-400 cursor-default">NL</span>
+    <span class="text-slate-500">/</span>
+    <a href="index-en.html" class="text-slate-400 hover:text-white transition-colors">EN</a>
+  </div>
+
+  <header class="site-header">
+    <div class="container mx-auto px-6">
+      <h1 class="font-bold text-xl" style="font-family: 'Orbitron', sans-serif;">CFServices<span style="color:var(--cf-accent)">.nl</span></h1>
+      <p class="text-sm text-gray-500 mt-1">Transparant • Professioneel • Flexibel</p>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container mx-auto px-6">
+        <h2 class="text-3xl font-bold mb-4" style="font-family: 'Orbitron', sans-serif;">Uw Digitale Fundament</h2>
+        <p class="text-gray-400">Kies hieronder uw pad: IT-Diensten, AI-Expertise of beheer uw abonnement.</p>
+      </div>
+    </section>
+
+    <section id="morphic" class="bg-slate-900 py-10 border-b border-cyan-500/20 shadow-inner relative overflow-hidden">
+        <div class="absolute inset-0 opacity-5" style="background-image: radial-gradient(#06b6d4 1px, transparent 1px); background-size: 20px 20px;"></div>
+        
+        <div class="container mx-auto px-6 text-center max-w-2xl relative z-10">
+            <h3 class="text-white text-sm font-bold mb-6 uppercase tracking-widest" style="font-family: 'Orbitron', sans-serif;">
+                SELECTEER UW GENERAAL
+            </h3>
+            
+            <div class="flex justify-center gap-4 mb-6">
+                <button onclick="setPersona('aetron')" id="btn-aetron" class="persona-btn active text-violet-400 bg-violet-900/30 px-4 py-2 rounded text-xs font-mono font-bold">AETRON<br><span class="text-[9px] opacity-70">STRATEGIE</span></button>
+                <button onclick="setPersona('z3ro')" id="btn-z3ro" class="persona-btn text-cyan-400 bg-cyan-900/30 px-4 py-2 rounded text-xs font-mono font-bold">Z3RO<br><span class="text-[9px] opacity-70">EXECUTIE</span></button>
+                <button onclick="setPersona('luxen')" id="btn-luxen" class="persona-btn text-pink-400 bg-pink-900/30 px-4 py-2 rounded text-xs font-mono font-bold">LUXEN<br><span class="text-[9px] opacity-70">CREATIE</span></button>
+            </div>
+
+            <div class="flex items-center bg-black/40 border border-slate-700 rounded-full p-1 shadow-lg transition-all focus-within:border-white/50" id="search-bar">
+                <input type="text" id="morphic-query" placeholder="Stel uw vraag aan Aetron..." 
+                    class="flex-grow bg-transparent text-white font-mono px-4 py-2 focus:outline-none placeholder-slate-600 text-sm">
+                <button onclick="sendQuery()" class="bg-slate-700 hover:bg-white hover:text-black text-white font-bold py-2 px-6 rounded-full transition-all text-xs font-mono tracking-wider">
+                    SCAN
+                </button>
+            </div>
+            
+            <div id="morphic-response" class="hidden mt-6 text-left bg-slate-950 border-l-4 p-4 rounded-r shadow-lg min-h-[80px]">
+                <div class="flex justify-between items-center mb-2">
+                    <p class="text-[10px] uppercase tracking-widest font-bold" id="response-agent">SYSTEM</p>
+                    <span class="text-[9px] text-slate-500 font-mono" id="response-role">...</span>
+                </div>
+                <div id="response-content" class="text-sm leading-relaxed font-mono text-cyan-100"></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-8 bg-gradient-to-b from-slate-900 via-slate-950 to-slate-50 text-center font-mono tracking-widest border-b border-slate-200">
+      <div class="container mx-auto px-6">
+        <div class="inline-block p-4 border border-cyan-500/20 rounded-lg shadow-lg bg-black/40 backdrop-blur-sm transform hover:scale-105 transition duration-500 cursor-default">
+          <div class="relative w-10 h-10 mx-auto mb-2">
+            <div class="absolute inset-0 rounded-full border border-cyan-500/50 animate-[spin_4s_linear_infinite]"></div>
+            <div class="absolute inset-2 bg-cyan-400 rounded-full shadow-[0_0_15px_#06b6d4] animate-pulse"></div>
+          </div>
+          <div class="text-[10px] text-cyan-100 uppercase font-bold">CFServices Terminal</div>
+          <div class="text-[9px] text-cyan-500 mt-1">resonated through AETRON</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="container mx-auto px-6 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div class="service-card" style="border-top-color: #a855f7;">
+                <h3 class="font-bold text-lg mb-2">📦 Diensten & FAQ</h3>
+                <p class="text-sm text-gray-500">Bekijk ons aanbod in hardware en software.</p>
+                <a href="1-luxen/faq/index.html" class="card-link">Naar Overzicht →</a>
+            </div>
+            <div class="service-card" style="border-top-color: #f472b6;">
+                <h3>🛡️ Veld-ID Activatie</h3>
+                <p class="text-sm text-gray-500">Genereer uw unieke, geautoiriseerde identiteitscode (CFS-ID).</p>
+                <a href="1-luxen/register.html" class="card-link">Activeer ID →</a>
+            </div>
+            <div class="service-card" style="border-top-color: #06b6d4;">
+                <h3>🔐 Client Portal</h3>
+                <p class="text-sm text-gray-500">Log in voor toegang tot uw dashboard.</p>
+                <a href="1-luxen/login.html" class="card-link">Inloggen →</a>
+            </div>
+            <div class="service-card" style="border-top-color: #fcd34d;">
+                <h3>📊 Abonnementen</h3>
+                <p class="text-sm text-gray-500">Bekijk onze transparante tarieven.</p>
+                <a href="1-luxen/faq/index.html#rates" class="card-link">Tarieven →</a>
+            </div>
+        </div>
+    </div>
+  </main>
+
+  <footer class="bg-slate-200 py-8 text-center text-sm text-gray-500 mt-auto">
+    <div class="container mx-auto px-6">
+      <p>&copy; 2025 CFServices — Onderdeel van PAC-Suite Global Alliance.</p>
+      <div style="margin-top: 15px;">
+        <a href="2-aetron/manifest.html" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 20px; background: rgba(15, 23, 42, 0.05); border: 1px solid rgba(15, 23, 42, 0.1);">
+          <span style="display: block; width: 8px; height: 8px; background-color: #10b981; border-radius: 50%; box-shadow: 0 0 8px #10b981; animation: pulse 2s infinite;"></span>
+          <span style="font-family: 'Orbitron', sans-serif; font-size: 0.7rem; color: #64748b; letter-spacing: 1px; text-transform: uppercase;">
+              Aetron Node: Active
+          </span>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/generaal-bar.js"></script>
+  
+  <script>
+    let currentPersona = 'aetron';
+
+    function setPersona(persona) {
+        currentPersona = persona;
+        document.querySelectorAll('.persona-btn').forEach(btn => btn.classList.remove('active'));
+        document.getElementById('btn-' + persona).classList.add('active');
+        const bar = document.getElementById('search-bar');
+        if (persona === 'aetron') bar.style.borderColor = '#8b5cf6';
+        if (persona === 'z3ro') bar.style.borderColor = '#06b6d4';
+        if (persona === 'luxen') bar.style.borderColor = '#f472b6';
+    }
+
+    async function sendQuery() {
+        const input = document.getElementById('morphic-query');
+        const box = document.getElementById('morphic-response');
+        const content = document.getElementById('response-content');
+        const agentLabel = document.getElementById('response-agent');
+        const roleLabel = document.getElementById('response-role');
+        
+        if(!input.value) return;
+        
+        box.classList.remove('hidden');
+        content.innerHTML = '<span class="text-slate-500 animate-pulse">> Initialiseren van Morphic Handshake...</span>';
+        
+        if (currentPersona === 'aetron') { box.style.borderColor = '#8b5cf6'; agentLabel.style.color = '#8b5cf6'; }
+        if (currentPersona === 'z3ro') { box.style.borderColor = '#06b6d4'; agentLabel.style.color = '#06b6d4'; }
+        if (currentPersona === 'luxen') { box.style.borderColor = '#f472b6'; agentLabel.style.color = '#f472b6'; }
+
+        // Echo Animatie
+        setTimeout(() => { if(content.innerHTML.includes('Initialiseren')) content.innerHTML = '<span class="text-cyan-600 font-bold">...Resonance [01] ↻ Echo 1.9 detected...</span>'; }, 800);
+
+        try {
+            const response = await fetch('/api/aetron/scan', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    query: input.value,
+                    manualPersona: currentPersona 
+                })
+            });
+
+            const data = await response.json();
+
+            if (data.resonance) {
+                agentLabel.innerText = data.persona.toUpperCase();
+                roleLabel.innerText = data.role;
+
+                // BEELDEN GENEREREN (Als ze er zijn)
+                let imagesHtml = '';
+                if (data.images && data.images.length > 0) {
+                    imagesHtml = `
+                        <div class="mt-4 grid grid-cols-2 md:grid-cols-3 gap-2 border-t border-slate-800 pt-4">
+                            ${data.images.slice(0, 3).map(url => `
+                                <a href="${url}" target="_blank" class="block overflow-hidden rounded border border-cyan-500/30 hover:border-cyan-400 transition group">
+                                    <img src="${url}" class="w-full h-24 object-cover opacity-80 group-hover:opacity-100 transition duration-500 hover:scale-110" alt="Visual Data">
+                                </a>
+                            `).join('')}
+                        </div>
+                        <p class="text-[9px] text-slate-500 mt-1 uppercase tracking-widest">Visual Data Stream</p>
+                    `;
+                }
+
+                content.innerHTML = `<span class="typing-effect leading-relaxed block">${data.output}</span>${imagesHtml}<div class="mt-4 text-[9px] text-slate-600 font-mono">↻ Timestamp: ${data.timestamp}</div>`;
+            } else {
+                content.innerHTML = '<span class="text-red-400">⚠️ Signaal verloren.</span>';
+            }
+
+        } catch (error) {
+            console.error(error);
+            content.innerHTML = '<span class="text-red-400">❌ Connectie Fout. API Offline.</span>';
+        }
+    }
+
+    document.addEventListener('contextmenu', event => event.preventDefault());
+    document.getElementById('morphic-query').addEventListener("keypress", function(event) {
+        if (event.key === "Enter") sendQuery();
+    });
+  </script>
+</body>
+</html>

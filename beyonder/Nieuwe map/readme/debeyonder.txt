@@ -1,0 +1,32 @@
+# Beyonder
+
+Beyonder is een startpunt.
+
+Dit project begint bewust vanuit een historisch HTML-fragment:
+een origineel document dat de intentie, toon en richting draagt
+van wat later complexer werd.
+
+We gebruiken dit bestand niet als “oude versie”,
+maar als **canoniek nulpunt (0/37)**.
+
+## Wat Beyonder is
+- Een ruimte voor experiment, betekenis en interface
+- Een plek waar interactie vóór functionaliteit komt
+- Een project dat mag groeien, maar niet hoeft
+
+## Wat Beyonder niet is
+- Geen product
+- Geen framework
+- Geen verplicht pad
+
+## Werkwijze
+- Het originele `index.html` blijft onaangetast
+- Nieuwe ideeën ontstaan ernaast, niet eroverheen
+- Alleen wat resoneert, mag blijven
+
+## Status
+Actief · Rustig · Open
+
+---
+
+© Beyonder

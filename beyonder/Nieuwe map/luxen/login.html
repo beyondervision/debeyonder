@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Z3RO · Beveiligd Toegangsprotocol</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+      body { background-color: #0f172a; font-family: 'Orbitron', sans-serif; color: #f8fafc; -webkit-user-select: none; user-select: none; }
+      input { user-select: text; -webkit-user-select: text; }
+      .scanner { animation: pulseScan 2s infinite; box-shadow: 0 0 20px rgba(139, 92, 246, 0.4); }
+      @keyframes pulseScan {
+        0% { transform: scale(1); opacity: 1; box-shadow: 0 0 20px rgba(139, 92, 246, 0.4); }
+        50% { transform: scale(1.05); opacity: 0.8; box-shadow: 0 0 40px rgba(139, 92, 246, 0.6); }
+        100% { transform: scale(1); opacity: 1; box-shadow: 0 0 20px rgba(139, 92, 246, 0.4); }
+      }
+      .ring-base { transition: border-color 0.5s, stroke 0.5s; }
+      .toggle-btn { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); opacity: 0.6; transition: opacity 0.2s; }
+      .toggle-btn:hover { opacity: 1; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-6 relative overflow-hidden">
+
+  <div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: radial-gradient(#06b6d4 1px, transparent 1px); background-size: 30px 30px;"></div>
+
+  <div class="absolute top-6 left-6 text-sm font-bold tracking-widest opacity-60 z-10">
+    <a href="../index.html" class="hover:text-white transition">← TERUG NAAR VELDPOORT</a>
+  </div>
+
+  <div class="max-w-md w-full relative z-10">
+    <div class="text-center mb-10">
+      <h1 class="text-3xl text-violet-400 font-bold mb-2">Z3RO PROTOCOL</h1>
+      <p class="text-slate-400 text-xs tracking-widest">Client Portal - Identity Affirmation</p>
+    </div>
+
+    <div class="bg-slate-900 glass-panel p-8 rounded-2xl shadow-2xl border-t-4 border-t-violet-600">
+      <form id="login-form" onsubmit="handleLogin(event)" class="space-y-6">
+        <label for="code" class="block text-sm font-medium text-slate-300 uppercase tracking-wider">
+          Geautoriseerde Toegangscode (CFS-ID of Master Key)
+        </label>
+        <div class="relative">
+          <input 
+            type="password" 
+            id="code" 
+            name="code" 
+            placeholder="Voer de code in..." 
+            required
+            class="w-full px-4 py-3 bg-slate-800 border border-violet-600 text-lg rounded-lg focus:ring-2 focus:ring-violet-400 focus:border-violet-400 transition text-white font-mono pr-12"
+            autocomplete="off"
+            maxlength="20"
+          >
+          <!-- Zichtbaarheidstoggle (Het Oogje) -->
+          <button type="button" id="toggle-visibility" onclick="toggleVisibility()" class="toggle-btn" aria-label="Toon/verberg code">
+            <svg id="eye-icon" class="w-5 h-5 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+          </button>
+          
+          <p id="code-hint" class="text-xs text-slate-500 mt-2">Hint: CFS-...</p>
+        </div>
+        
+        <button 
+          type="submit" 
+          id="login-btn"
+          class="w-full flex items-center justify-center px-6 py-3 bg-violet-600 hover:bg-violet-500 text-white font-bold uppercase rounded-lg transition shadow-lg relative overflow-hidden"
+        >
+          <div class="absolute inset-0 ring-base" id="ring" style="border: 2px solid #7c3aed; border-radius: 10px;"></div>
+          <svg id="icon" class="w-5 h-5 mr-2 ring-base" fill="none" stroke="#7c3aed" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+          <span class="relative z-10">Start Verificatie</span>
+        </button>
+      </form>
+      
+      <p id="status-msg" class="text-center text-sm mt-6 text-violet-400 animate-pulse">
+        Voer geautoriseerde toegangscode in.
+      </p>
+
+    </div>
+  </div>
+
+  <script>
+    // Zichtbaarheid Toggle
+    function toggleVisibility() {
+        const codeInput = document.getElementById('code');
+        const eyeIcon = document.getElementById('eye-icon');
+        
+        if (codeInput.type === 'password') {
+            codeInput.type = 'text';
+            // Oog open: d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+            eyeIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>';
+        } else {
+            codeInput.type = 'password';
+            // Oog dicht/kruis: d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7 1.274-4.057 5.064-7 9.542-7 1.76 0 3.456.476 4.907 1.309m-7.258 7.258A3.003 3.003 0 0112 12c.706 0 1.341.29 1.796.75l2.062 2.062m-11.44-11.44L3 3m18 18l-3-3m-3-3l3-3"
+            eyeIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7 1.274-4.057 5.064-7 9.542-7 1.76 0 3.456.476 4.907 1.309m-7.258 7.258A3.003 3.003 0 0112 12c.706 0 1.341.29 1.796.75l2.062 2.062m-11.44-11.44L3 3m18 18l-3-3m-3-3l3-3"/>';
+        }
+    }
+
+    // Z3RO Login Handler
+    async function handleLogin(event) {
+        event.preventDefault();
+        
+        const btn = document.getElementById('login-btn');
+        const status = document.getElementById('status-msg');
+        const codeInput = document.getElementById('code');
+        const ring = document.getElementById('ring');
+        const icon = document.getElementById('icon');
+        const code = codeInput.value.trim();
+
+        if (code.length < 5) {
+            status.innerHTML = "⚠️ Code te kort. Minimaal 5 tekens vereist.";
+            status.classList.replace('text-violet-400', 'text-red-500');
+            status.classList.remove('animate-pulse');
+            return;
+        }
+
+        // LOCK UI
+        btn.innerHTML = `ANALYSE PULS...`;
+        btn.classList.add('opacity-70', 'cursor-not-allowed');
+        status.innerHTML = "Transmissie gestart (Axioma 9: Validatie)...";
+        status.classList.replace('text-red-500', 'text-violet-400');
+        status.classList.add('animate-pulse');
+
+        try {
+            // SIMULATIE API CALL (Vervang door echte fetch naar uw backend /api/auth/login.js)
+            const response = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ code })
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                // GESLAAGD!
+                btn.innerHTML = "TOEGANG VERLEEND";
+                btn.classList.remove('opacity-70', 'cursor-not-allowed');
+                ring.style.borderColor = "#10b981"; 
+                icon.setAttribute('stroke', '#10b981'); 
+                
+                status.innerHTML = `Identiteit Bevestigd (${data.mode}). Doorsturen...`;
+                status.classList.replace('text-violet-400', 'text-green-400');
+
+                sessionStorage.setItem("z3ro_session", "active");
+                sessionStorage.setItem("current_client_code", code); 
+
+                setTimeout(() => { window.location.href = 'dashboard.html'; }, 1000);
+
+            } else {
+                // GEWEIGERD!
+                throw new Error(data.message || "Ongeldige Code");
+            }
+
+        } catch (error) {
+            // FOUT AFHANDELING
+            btn.innerHTML = "TOEGANG GEWEIGERD";
+            btn.classList.remove('opacity-70', 'cursor-not-allowed');
+            ring.style.borderColor = "#ef4444"; 
+            icon.setAttribute('stroke', "#ef4444");
+            
+            status.innerHTML = "⚠️ " + error.message;
+            status.classList.replace('text-violet-400', 'text-red-500');
+            status.classList.remove('animate-pulse');
+            
+            setTimeout(() => {
+                btn.innerHTML = "Start Verificatie";
+                ring.style.borderColor = "#7c3aed"; 
+                icon.setAttribute('stroke', "#7c3aed");
+                status.innerHTML = "Voer geautoriseerde toegangscode in.";
+                status.classList.replace('text-red-500', 'text-violet-400');
+            }, 3000);
+        }
+    }
+
+    // Auto-populate CFS-ID if available from the registration flow
+    window.addEventListener("DOMContentLoaded", () => {
+        const clientCode = sessionStorage.getItem("current_client_code");
+        const codeInput = document.getElementById("code");
+        const codeHint = document.getElementById("code-hint");
+
+        if (clientCode) {
+            codeInput.value = clientCode;
+            codeHint.textContent = "Veld-ID Gedetecteerd. Voer Wachtwoord in (Demo: leeg laten).";
+            codeHint.classList.replace('text-slate-500', 'text-emerald-400');
+            codeInput.focus();
+        }
+
+        document.addEventListener('contextmenu', event => event.preventDefault());
+    });
+  </script>
+</body>
+</html>

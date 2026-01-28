@@ -1,119 +1,150 @@
 <!DOCTYPE html>
-<html lang="nl">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>CFServices.ai · Entry Field</title>
+  <title>The Beyonder · Unfinished Present</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 
   <style>
     :root {
-      --bg:#0b0e14;
-      --panel:#111827;
-      --border:#1f2937;
-      --text:#e5e7eb;
-      --muted:#9ca3af;
-
-      --accent:#38bdf8;
-      --accent-soft:rgba(56,189,248,.15);
-      --warn:#facc15;
-      --bad:#f87171;
+      --bg:#050509;
+      --fg:#f5f5f5;
+      --muted:#9a9aa5;
+      --accent:#f5b400;
+      --border:#262633;
+      --font-main: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --font-mono: "JetBrains Mono", Menlo, monospace;
     }
 
-    *{box-sizing:border-box}
+    * { box-sizing:border-box; margin:0; padding:0; }
 
-    body{
-      margin:0;
+    body {
       min-height:100vh;
-      background:radial-gradient(circle at top,#0f172a 0%,var(--bg) 60%);
-      color:var(--text);
-      font-family:'Space Mono',monospace;
+      background:radial-gradient(circle at top, #151525 0, #050509 60%, #000 100%);
+      color:var(--fg);
+      font-family:var(--font-main);
       display:flex;
       align-items:center;
       justify-content:center;
-      animation:fadeIn 1.2s ease;
-    }
-
-    .container{max-width:720px;width:100%;padding:2rem}
-
-    .panel{
-      position:relative;
       overflow:hidden;
-      background:linear-gradient(180deg,rgba(17,24,39,.95),rgba(11,14,20,.95));
-      border:1px solid var(--border);
-      border-radius:14px;
-      padding:2.6rem;
-      box-shadow:0 0 0 1px rgba(56,189,248,.05),0 20px 60px rgba(0,0,0,.6);
     }
 
-    /* Scanlijn */
-    .panel::after{
-      content:"";
+    /* --- ACTIVATION FIELD --- */
+    .activation {
       position:absolute;
-      inset:-50%;
-      background:linear-gradient(
-        rgba(56,189,248,0) 0%,
-        rgba(56,189,248,.03) 50%,
-        rgba(56,189,248,0) 100%
-      );
-      transform:rotate(30deg);
-      animation:scan 8s linear infinite;
+      inset:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      padding:2rem;
+      transition:opacity 1.2s ease;
+    }
+
+    .activation.hidden {
+      opacity:0;
       pointer-events:none;
-      z-index:1;
     }
 
-    @keyframes scan{
-      from{transform:rotate(30deg) translateY(-100%)}
-      to{transform:rotate(30deg) translateY(100%)}
+    .activation-inner {
+      max-width:680px;
     }
 
-    h1,.subtitle,.paths,.footer{position:relative;z-index:2}
+    .activation h1 {
+      font-size:clamp(2.2rem, 5vw, 3.6rem);
+      font-weight:700;
+      line-height:1.05;
+      margin-bottom:1.5rem;
+      letter-spacing:-0.02em;
+    }
 
-    h1{
-      font-family:'Orbitron',sans-serif;
+    .activation p {
+      font-size:1.1rem;
+      color:var(--muted);
+      line-height:1.7;
+    }
+
+    .activation .hint {
+      margin-top:2.5rem;
+      font-family:var(--font-mono);
+      font-size:0.75rem;
       color:var(--accent);
-      letter-spacing:.08em;
-      margin-bottom:.8rem;
+      opacity:0.8;
+      letter-spacing:0.12em;
+      text-transform:uppercase;
     }
 
-    .subtitle{color:var(--muted);margin-bottom:2rem}
+    /* --- ENTRY FRAME (HIDDEN INITIALLY) --- */
+    .entry {
+      opacity:0;
+      transform:translateY(12px);
+      transition:opacity 1.4s ease, transform 1.4s ease;
+      width:100%;
+      max-width:900px;
+      padding:2.5rem;
+    }
 
-    .paths{display:grid;gap:1.2rem}
+    .entry.visible {
+      opacity:1;
+      transform:translateY(0);
+    }
 
-    .path{
-      display:block;
+    .panel {
+      border:1px solid var(--border);
+      background:rgba(5,5,9,.85);
+      border-radius:14px;
+      padding:2.5rem;
+      box-shadow:0 30px 80px rgba(0,0,0,.6);
+    }
+
+    .panel h2 {
+      font-size:1.4rem;
+      color:var(--accent);
+      margin-bottom:1rem;
+      letter-spacing:0.12em;
+      text-transform:uppercase;
+    }
+
+    .panel p {
+      color:var(--muted);
+      line-height:1.7;
+      margin-bottom:1.2rem;
+    }
+
+    .routes {
+      display:grid;
+      gap:1rem;
+      margin-top:2rem;
+    }
+
+    .route {
       border:1px solid var(--border);
       border-radius:10px;
-      padding:1.4rem;
+      padding:1.2rem;
       text-decoration:none;
-      color:var(--text);
-      background:rgba(17,24,39,.6);
+      color:var(--fg);
       transition:.25s ease;
     }
 
-    .path:hover{
+    .route:hover {
       border-color:var(--accent);
-      background:var(--accent-soft);
+      background:rgba(245,180,0,.08);
       transform:translateY(-2px);
     }
 
-    .path-title{
-      font-family:'Orbitron',sans-serif;
+    .route-title {
+      font-family:var(--font-mono);
+      color:var(--accent);
       margin-bottom:.3rem;
     }
 
-    .path-desc{font-size:.85rem;color:var(--muted)}
-
-    .footer{
-      margin-top:2.5rem;
-      font-size:.75rem;
-      text-align:center;
+    .route-desc {
+      font-size:.85rem;
       color:var(--muted);
     }
 
-    /* Z.A.L. */
-    #zal{
+    /* Z.A.L presence */
+    #zal {
       position:fixed;
       bottom:18px;
       right:20px;
@@ -127,60 +158,83 @@
       font-size:.65rem;
       color:var(--muted);
       backdrop-filter:blur(8px);
-      z-index:9999;
+      opacity:0;
+      transition:opacity 1s ease;
     }
 
-    .zal-indicator{
+    #zal.active { opacity:1; }
+
+    .zal-dot {
       width:8px;height:8px;border-radius:50%;
       background:var(--accent);
-      animation:zalPulse 2.6s infinite;
-    }
-
-    @keyframes zalPulse{
-      0%{box-shadow:0 0 0 0 rgba(56,189,248,.6)}
-      70%{box-shadow:0 0 0 10px rgba(56,189,248,0)}
-      100%{box-shadow:0 0 0 0 rgba(56,189,248,0)}
-    }
-
-    @keyframes fadeIn{
-      from{opacity:0;transform:translateY(8px)}
-      to{opacity:1;transform:translateY(0)}
+      box-shadow:0 0 12px rgba(245,180,0,.7);
     }
   </style>
 </head>
 
 <body>
 
-<div id="zal">
-  <div class="zal-indicator"></div>
-  <div>Z.A.L. · passieve begeleiding actief</div>
+<!-- ACTIVATION -->
+<div class="activation" id="activation">
+  <div class="activation-inner">
+    <h1>Unfinished Present</h1>
+    <p>
+      This is not a concept to explain.<br>
+      It is a field to enter.
+    </p>
+    <div class="hint">Remain · Move · Speak</div>
+  </div>
 </div>
 
-<div class="container">
+<!-- ENTRY -->
+<div class="entry" id="entry">
   <div class="panel">
-    <h1>CFServices.ai · Entry Field</h1>
+    <h2>Entry Field</h2>
+    <p>
+      Salute.  
+      You are not here to browse.  
+      You are here to resonate.
+    </p>
 
-    <div class="subtitle">
-      Initiatiepunt van lagen, routes en resonantie.<br>
-      Geen verplicht pad — alleen richting.
-    </div>
-
-    <div class="paths">
-      <a class="path" href="./gate.html">
-        <div class="path-title">→ Gate</div>
-        <div class="path-desc">Boundary-laag · Toegang & resonantiecontrole</div>
+    <div class="routes">
+      <a class="route" href="./gate.html">
+        <div class="route-title">→ Gate</div>
+        <div class="route-desc">Boundary · access & resonance control</div>
       </a>
-      <a class="path" href="./dashboard.html">
-        <div class="path-title">→ Dashboard</div>
-        <div class="path-desc">Z.A.L. observatie · status & veldactiviteit</div>
+      <a class="route" href="./dashboard.html">
+        <div class="route-title">→ Dashboard</div>
+        <div class="route-desc">Z.A.L observability · system & field state</div>
       </a>
-    </div>
-
-    <div class="footer">
-      Co-creatie actief · CFServices.ai
     </div>
   </div>
 </div>
+
+<!-- Z.A.L -->
+<div id="zal">
+  <div class="zal-dot"></div>
+  Z.A.L · active presence
+</div>
+
+<script>
+  let activated = false;
+
+  function activate() {
+    if (activated) return;
+    activated = true;
+
+    document.getElementById("activation").classList.add("hidden");
+    document.getElementById("entry").classList.add("visible");
+    document.getElementById("zal").classList.add("active");
+  }
+
+  // time-based activation
+  setTimeout(activate, 4200);
+
+  // interaction-based activation
+  window.addEventListener("scroll", activate, { once:true });
+  window.addEventListener("click", activate, { once:true });
+  window.addEventListener("keydown", activate, { once:true });
+</script>
 
 </body>
 </html>
